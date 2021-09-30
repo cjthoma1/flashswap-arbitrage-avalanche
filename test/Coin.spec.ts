@@ -26,7 +26,7 @@ describe('Coin', function () {
     });
 
     beforeEach(async function () {
-        this.coin = await this.Coin.deploy()
+        this.coin = await this.Coin.deploy("Example ERC20 Token", "XMPL",123456789 );
         await this.coin.deployed()
         this.mock = await this.MockContract.deploy()
         await this.mock.deployed()

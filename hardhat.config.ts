@@ -1,7 +1,10 @@
-import { task } from "hardhat/config"
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers"
-import { BigNumber } from "ethers"
-import "@nomiclabs/hardhat-waffle"
+import { task } from "hardhat/config";
+import { HardhatUserConfig } from "hardhat/types";
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
+import { BigNumber } from "ethers";
+import "@nomiclabs/hardhat-waffle";
+import "@nomiclabs/hardhat-ethers";
+import "hardhat-deploy";
 
 // When using the hardhat network, you may choose to fork Fuji or Avalanche Mainnet
 // This will allow you to debug contracts using the hardhat network while keeping the current network state
@@ -9,56 +12,74 @@ import "@nomiclabs/hardhat-waffle"
 // For more information go to the hardhat guide
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
-const FORK_FUJI = false
-const FORK_MAINNET = false
-const forkingData = FORK_FUJI ? {
-  url: 'https://api.avax-test.network/ext/bc/C/rpc',
-} : FORK_MAINNET ? {
-  url: 'https://api.avax.network/ext/bc/C/rpc'
-} : undefined
+const FORK_FUJI = false;
+const FORK_MAINNET = true;
+const forkingData = FORK_FUJI
+  ? {
+      url: "https://api.avax-test.network/ext/bc/C/rpc",
+    }
+  : FORK_MAINNET
+  ? {
+      url: "https://api.avax.network/ext/bc/C/rpc",
+    }
+  : undefined;
 
-task("accounts", "Prints the list of accounts", async (args, hre): Promise<void> => {
-  const accounts: SignerWithAddress[] = await hre.ethers.getSigners()
-  accounts.forEach((account: SignerWithAddress): void => {
-    console.log(account.address)
-  })
-})
-
-task("balances", "Prints the list of AVAX account balances", async (args, hre): Promise<void> => {
-  const accounts: SignerWithAddress[] = await hre.ethers.getSigners()
-  for(const account of accounts){
-    const balance: BigNumber = await hre.ethers.provider.getBalance(
-      account.address
-    );
-    console.log(`${account.address} has balance ${balance.toString()}`);
+task(
+  "accounts",
+  "Prints the list of accounts",
+  async (args, hre): Promise<void> => {
+    const accounts: SignerWithAddress[] = await hre.ethers.getSigners();
+    accounts.forEach((account: SignerWithAddress): void => {
+      console.log(account.address);
+    });
   }
-})
+);
 
-export default {
+task(
+  "balances",
+  "Prints the list of AVAX account balances",
+  async (args, hre): Promise<void> => {
+    const accounts: SignerWithAddress[] = await hre.ethers.getSigners();
+    for (const account of accounts) {
+      const balance: BigNumber = await hre.ethers.provider.getBalance(
+        account.address
+      );
+      console.log(`${account.address} has balance ${balance.toString()}`);
+    }
+  }
+);
+
+const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.5.16"
+        version: "0.5.16",
       },
       {
-        version: "0.6.2"
+        version: "0.6.2",
       },
       {
-        version: "0.6.4"
+        version: "0.6.4",
       },
       {
-        version: "0.7.0"
+        version: "0.6.6",
       },
       {
-        version: "0.8.0"
-      }
-    ]
+        version: "0.6.12",
+      },
+      {
+        version: "0.7.0",
+      },
+      {
+        version: "0.8.0",
+      },
+    ],
   },
   networks: {
     hardhat: {
       gasPrice: 225000000000,
-      chainId: !forkingData ? 43112 : undefined, //Only specify a chainId if we are not forking
-      forking: forkingData
+      chainId: !forkingData ? 43112 : 43114, //Only specify a chainId if we are not forking
+      forking: forkingData,
     },
     local: {
       url: 'http://localhost:9650/ext/bc/C/rpc',
@@ -74,20 +95,143 @@ export default {
         "0xbbc2865b76ba28016bc2255c7504d000e046ae01934b04c694592a6276988630",
         "0xcdbfd34f687ced8c6968854f8a99ae47712c4f4183b78dcc4a903d1bfe8cbf60",
         "0x86f78c5416151fe3546dece84fda4b4b1e36089f2dbc48496faf3a950f16157c",
-        "0x750839e9dbbd2a0910efe40f50b2f3b2f2f59f5580bb4b83bd8c1201cf9a010a"
-      ]
+        "0x750839e9dbbd2a0910efe40f50b2f3b2f2f59f5580bb4b83bd8c1201cf9a010a",
+      ],
     },
     fuji: {
-      url: 'https://api.avax-test.network/ext/bc/C/rpc',
+      url: "https://api.avax-test.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
       chainId: 43113,
-      accounts: []
+      accounts: [],
     },
     mainnet: {
-      url: 'https://api.avax.network/ext/bc/C/rpc',
+      url: "https://api.avax.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
       chainId: 43114,
-      accounts: []
+      accounts: [],
+    },
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0, // here this will by default take the first account as deployer
+      hardhat: 0, // similarly on hardhat it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
+      fuji: "0x4884afd54ecaefa29aeefc051d579c998a6f5dda",
+      mainnet: "0x4884afd54ecaefa29aeefc051d579c998a6f5dda",
+    },
+    user: { // Used for testing
+      default: 1, 
+      hardhat: 1,
+    },
+    // safeMath: {
+    //   fuji: '0x165744DB0F6928079e9136cE9F722195cc7b2341',
+    //   mainnet: '0xcaEbc59101a97117552f4d6fCFd5d89A53178C1F'
+    // },
+    sushiSwapFactory: {
+      default: '0x99653EfFF54a26bc24567A251F74d8A0A9905390',
+      hardhat: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
+      fuji: '0x99653EfFF54a26bc24567A251F74d8A0A9905390',
+      mainnet: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4'
+    },
+    sushiSwapRouter: {
+      default: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
+      hardhat: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
+      fuji: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
+      mainnet: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506'
+    },
+    pangolinFactory: {
+      default: '0x5898f69bA879346AB91d1582F5450335Dd94DaCd',
+      hardhat: '0xefa94DE7a4656D787667C749f7E1223D71E9FD88',
+      fuji: '0x5898f69bA879346AB91d1582F5450335Dd94DaCd',
+      mainnet: '0xefa94DE7a4656D787667C749f7E1223D71E9FD88'
+    },
+    pangolinRouter: {
+      default: '0x456eb2F55555bF72a728bF971846686253910547',
+      hardhat: '0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106',
+      fuji: '0x456eb2F55555bF72a728bF971846686253910547',
+      mainnet: '0xE54Ca86531e17Ef3616d22Ca28b0D458b6C89106'
+    },
+    traderJoeFactory: {
+      default: '0x6b516B23A260E2d904Dbfa47c7e7AFd04E5ADBC9',
+      hardhat: '0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10',
+      fuji: '0x6b516B23A260E2d904Dbfa47c7e7AFd04E5ADBC9',
+      mainnet: '0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10'
+    },
+    tranderJoeRouter: {
+      default: '0x4C7Edcc43424f474C2b37680565c1163f94c66FC',
+      hardhat: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4',
+      fuji: '0x4C7Edcc43424f474C2b37680565c1163f94c66FC',
+      mainnet: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4'
+    },
+    wavax: {
+      default: '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
+      hardhat: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+      fuji: '0xd00ae08403B9bbb9124bB305C09058E32C39A48c',
+      mainnet: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7'
+    },
+    usdt: {
+      default: '0x320f9A00BDDFE466887A8D0390cF32e9373fFc9f',
+      hardhat: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
+      fuji: '0x320f9A00BDDFE466887A8D0390cF32e9373fFc9f',
+      mainnet: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118'
+    },
+    usdc: {
+      default: '',
+      hardhat: '',
+      fuji: '0x684ebfda880c16652F7F571223c11029b96d0e10',
+      mainnet: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664'
+    },
+    dai: {
+      default: '',
+      hardhat: '',
+      fuji: '0x2125829808Fb3466d2114590b704f0266421951D',
+      mainnet: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70'
+    },
+    traderJoe: {
+      default: '',
+      hardhat: '',
+      fuji: '0x2E4828F1a2dFC54d15Ef398ee4d0BE26d7211d56',
+      mainnet: '0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd'
+    },
+    png: {
+      default: '',
+      hardhat: '',
+      fuji: '0x6d0A79756774c7cbac6Ce5c5e3b0f40b0ccCcB20',
+      mainnet: '0x60781C2586D68229fde47564546784ab3fACA982'
     }
-  }
+  },
+  external: {
+    contracts: [
+      {
+        artifacts: "node_modules/@openzeppelin/contracts-upgradeable/build/contracts",
+      },
+      {
+        artifacts: "node_modules/@pangolindex/exchange-contracts/artifacts",
+      },
+      // {
+      //   artifacts: "node_modules/@uniswap/v2-periphery/build",
+      // },
+      // {
+      //   artifacts: "node_modules/@uniswap/v2-core/build"
+      // },
+      {
+        artifacts: "node_modules/@traderjoe-xyz/core/artifacts",
+      },
+      {
+        artifacts: "node_modules/@sushiswap/core/build/abi"
+      }
+    ],
+    deployments: {
+    //   // example: ["node_modules/@cartesi/arbitration/build/contracts"],
+    //   default: ["node_modules/@uniswap/v2-periphery/build"],
+      // hardhat: ['node_modules/@uniswap/v2-periphery/build', 'node_modules/@uniswap/v2-core/build'],
+    //   fuji: ['node_modules/@uniswap/v2-periphery/build'],
+    //   mainnet: ['node_modules/@uniswap/v2-periphery/builds']
+    }
 }
+  // paths: {
+  //   deploy: "deploy",
+  //   deployments: "artifacts",
+  // },
+};
+
+export default config;
