@@ -1,4 +1,4 @@
-import { bigNumberToNumber, expandToXDecimals } from "../../../../shared/utilities";
+import { bigNumberToNumber, expandToXDecimals, expandTo18Decimals } from '../../../../shared/utilities';
 import { Contract, BigNumber } from 'ethers';
 
 const swapMainToPartner = async (
@@ -59,27 +59,21 @@ const swapMainToPartner = async (
         const profitPrediction = secondaryReserve1.sub(primaryReserve0);
         console.log('Profit prediction', bigNumberToNumber(profitPrediction));
 
-        // Estimated gas in Avalanche network
-        const estimatedGas = 1000000000;
-        // The gas price (in wei)...
-        const gasPrice = await ethers.provider.getGasPrice();
-        let gasCost = gasPrice.mul(estimatedGas);
-
-        // Increase gas cost by 30% to account for additional contract calls within contract
-        gasCost = gasCost.add(gasCost.div(BigNumber.from('30')));
-        const finalGasCost = ethers.utils.formatUnits(gasCost);
-
-        console.log('Formated gas', ethers.utils.formatUnits(estimatedGas));
-
-        // Converts gas price from wei to eth
-        console.log('Formated gas price', ethers.utils.formatUnits(gasPrice));
-        console.log('Formated gas cost', ethers.utils.formatUnits(gasCost));
+        // Estimated gas in Avalanche network        
+        // Gas Price in AVAX 
+        const gasPrice = 0.000000225;
+        const gasLimit = 21000;
+        const gasCost = gasPrice * gasLimit * 3; // Multiplying by three since we do multiple transactions;
+        const gasCostFormatted = bigNumberToNumber(expandTo18Decimals(gasCost));
+        
+        console.log('Gas cost', gasCost);
+        console.log('Gas cost formatted', gasCostFormatted);
 
         const price = bigNumberToNumber(expandToXDecimals(secondaryReserve1, 12)) / bigNumberToNumber(secondaryReserve0);
 
         console.log('Price', price);
         // If profit prediction is greater then gas then perform the swap
-        if ((profitPrediction / price) > +finalGasCost) {
+        if (bigNumberToNumber(profitPrediction.div(price)) > +gasCostFormatted) {
             console.log('This is where we would perform the flash swap');
             const tx = await primaryTokenPair.swap(
                 primaryAmount0,

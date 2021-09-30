@@ -80,6 +80,7 @@ const config: HardhatUserConfig = {
       gasPrice: 225000000000,
       chainId: !forkingData ? 43112 : 43114, //Only specify a chainId if we are not forking
       forking: forkingData,
+      // blockNumber: 5016623
     },
     local: {
       url: 'http://localhost:9650/ext/bc/C/rpc',
