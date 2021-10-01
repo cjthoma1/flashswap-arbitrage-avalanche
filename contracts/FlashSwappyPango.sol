@@ -60,12 +60,14 @@ contract FlashSwappyPango is IPangolinCallee {
       console.log('Partner Token Balance Pango', balance);
 
       balance = partnerToken.balanceOf(address(this));
-      console.log('Partner Token Balance Sender', balance);
+      console.log('Partner Token Balance Contract', balance);
 
       TransferHelper.safeTransfer(address(partnerToken), msg.sender, amountRequired); // return tokens to Pangolin pair
       TransferHelper.safeTransfer(address(partnerToken), sender, amountReceived - amountRequired); // PROFIT!!!
 
       balance = partnerToken.balanceOf(address(this));
-      console.log('Sender Token Balance after Profit', balance);
+      console.log('Contract Token Balance after Profit withdrawn', balance);
+      balance = partnerToken.balanceOf(sender);
+      console.log('My Token Balance after Profit', balance);
   }
 }

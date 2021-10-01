@@ -13,7 +13,7 @@ export interface IPangolinSushi {
     flashSwapContact: Contract;
 }
 
-export interface IPangolinTraderJoe{
+export interface IPangolinTraderJoe {
     traderJoeTokenPair: Contract;
     pangolinTokenPair: Contract;
     traderJoeLiquidityCompute: Contract;

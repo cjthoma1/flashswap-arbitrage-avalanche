@@ -157,7 +157,7 @@ const config: HardhatUserConfig = {
       fuji: '0x6b516B23A260E2d904Dbfa47c7e7AFd04E5ADBC9',
       mainnet: '0x9Ad6C38BE94206cA50bb0d90783181662f0Cfa10'
     },
-    tranderJoeRouter: {
+    traderJoeRouter: {
       default: '0x4C7Edcc43424f474C2b37680565c1163f94c66FC',
       hardhat: '0x60aE616a2155Ee3d9A68541Ba4544862310933d4',
       fuji: '0x4C7Edcc43424f474C2b37680565c1163f94c66FC',
@@ -176,26 +176,26 @@ const config: HardhatUserConfig = {
       mainnet: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118'
     },
     usdc: {
-      default: '',
-      hardhat: '',
+      default: '0x684ebfda880c16652F7F571223c11029b96d0e10',
+      hardhat: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
       fuji: '0x684ebfda880c16652F7F571223c11029b96d0e10',
       mainnet: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664'
     },
     dai: {
-      default: '',
-      hardhat: '',
+      default: '0x2125829808Fb3466d2114590b704f0266421951D',
+      hardhat: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
       fuji: '0x2125829808Fb3466d2114590b704f0266421951D',
       mainnet: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70'
     },
-    traderJoe: {
-      default: '',
-      hardhat: '',
+    joeToken: {
+      default: '0x2E4828F1a2dFC54d15Ef398ee4d0BE26d7211d56',
+      hardhat: '0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd',
       fuji: '0x2E4828F1a2dFC54d15Ef398ee4d0BE26d7211d56',
       mainnet: '0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd'
     },
     png: {
-      default: '',
-      hardhat: '',
+      default: '0x6d0A79756774c7cbac6Ce5c5e3b0f40b0ccCcB20',
+      hardhat: '0x60781C2586D68229fde47564546784ab3fACA982',
       fuji: '0x6d0A79756774c7cbac6Ce5c5e3b0f40b0ccCcB20',
       mainnet: '0x60781C2586D68229fde47564546784ab3fACA982'
     }

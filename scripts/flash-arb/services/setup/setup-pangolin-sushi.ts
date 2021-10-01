@@ -16,7 +16,6 @@ const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress:
         const sushiSwapComputeDeployed = await SushiSwapCompute.deploy(sushiSwapFactory);
         const pangolinSwapComputeDeployed = await PangolinSwapCompute.deploy(pangolinFactory);
 
-
         sushiSwapLiquidityCompute = new ethers.Contract(sushiSwapComputeDeployed.address, sushiSwapComputeDeployed.interface, sushiSwapComputeDeployed.signer);
         pangolinLiquidityCompute = new ethers.Contract(pangolinSwapComputeDeployed.address, pangolinSwapComputeDeployed.interface, pangolinSwapComputeDeployed.signer);
 
@@ -39,8 +38,8 @@ const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress:
         pangolinLiquidityCompute = new ethers.Contract('PangolinComputeLiquidityValue', PangolinComputeLiquidityValueArtifact.abi, signers[0]);
 
         if (swapFrom === ContractOptions.SUSHI_SWAP) {
-            const FlashSwappyArtifact = await artifacts.readArtifact('FlashSwappySushi');
-            flashSwapContact = new ethers.Contract('FlashSwappySushi', FlashSwappyArtifact.abi, signers[0]);
+            const FlashSwappySushiArtifact = await artifacts.readArtifact('FlashSwappySushi');
+            flashSwapContact = new ethers.Contract('FlashSwappySushi', FlashSwappySushiArtifact.abi, signers[0]);
         }
         else if (swapFrom === ContractOptions.PANGOLIN) {
             const FlashSwappyPangoArtifact = await artifacts.readArtifact('FlashSwappyPango');
