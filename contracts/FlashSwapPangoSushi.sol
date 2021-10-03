@@ -11,7 +11,7 @@ import "@sushiswap/core/contracts/uniswapv2/interfaces/IUniswapV2Router02.sol";
 
 import "hardhat/console.sol";
 
-contract FlashSwappyPango is IPangolinCallee {
+contract FlashSwapPangolinSushi is IPangolinCallee {
   address immutable pangolinFactory;
 
   uint constant deadline = 30000 days;

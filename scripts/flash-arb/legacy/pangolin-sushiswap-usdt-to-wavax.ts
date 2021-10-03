@@ -6,30 +6,30 @@ import IPangolinFactoryArtifact from '@pangolindex/exchange-contracts/artifacts/
 const runBot = async () => {
     const { usdt, wavax, sushiSwapFactory, sushiSwapRouter, pangolinFactory } = await getNamedAccounts();
     const signers = await ethers.getSigners();
-    let sushiSwapCompute, pangolinSwapCompute, flashSwappyPango;
+    let sushiSwapCompute, pangolinSwapCompute, flashSwapPangolinSushi;
 
     if (isLocalEnv(network.name)) {
         const SushiSwapCompute = await ethers.getContractFactory('SushiswapV2ComputeLiquidityValue');
         const PangolinSwapCompute = await ethers.getContractFactory('PangolinComputeLiquidityValue');
-        const FlashSwappyPango = await ethers.getContractFactory('FlashSwappyPango');
+        const FlashSwapPangolinSushi = await ethers.getContractFactory('FlashSwapPangolinSushi');
 
         const sushiSwapComputeDeployed = await SushiSwapCompute.deploy(sushiSwapFactory);
         const pangolinSwapComputeDeployed = await PangolinSwapCompute.deploy(pangolinFactory);
 
-        const flashSwappyPangoDeployed = await FlashSwappyPango.deploy(sushiSwapRouter, pangolinFactory);
+        const flashSwapPangolinSushiDeployed = await FlashSwapPangolinSushi.deploy(sushiSwapRouter, pangolinFactory);
 
         sushiSwapCompute = new ethers.Contract(sushiSwapComputeDeployed.address, sushiSwapComputeDeployed.interface, sushiSwapComputeDeployed.signer);
         pangolinSwapCompute = new ethers.Contract(pangolinSwapComputeDeployed.address, pangolinSwapComputeDeployed.interface, pangolinSwapComputeDeployed.signer);
-        flashSwappyPango = new ethers.Contract(flashSwappyPangoDeployed.address, flashSwappyPangoDeployed.interface, flashSwappyPangoDeployed.signer);
+        flashSwapPangolinSushi = new ethers.Contract(flashSwapPangolinSushiDeployed.address, flashSwapPangolinSushiDeployed.interface, flashSwapPangolinSushiDeployed.signer);
     }
     else {
         const SushiswapV2ComputeLiquidityValueArtifact = await artifacts.readArtifact('SushiswapV2ComputeLiquidityValue');
         const PangolinComputeLiquidityValueArtifact = await artifacts.readArtifact('PangolinComputeLiquidityValue');
-        const FlashSwappyPangoArtifact = await artifacts.readArtifact('FlashSwappyPango');
+        const FlashSwapPangolinSushiArtifact = await artifacts.readArtifact('FlashSwapPangolinSushi');
 
         sushiSwapCompute = new ethers.Contract('SushiswapV2ComputeLiquidityValue', SushiswapV2ComputeLiquidityValueArtifact.abi, signers[0]);
         pangolinSwapCompute = new ethers.Contract('PangolinComputeLiquidityValue', PangolinComputeLiquidityValueArtifact.abi, signers[0]);
-        flashSwappyPango = new ethers.Contract('FlashSwappyPango', FlashSwappyPangoArtifact.abi, signers[0]);
+        flashSwapPangolinSushi = new ethers.Contract('FlashSwapPangolinSushi', FlashSwapPangolinSushiArtifact.abi, signers[0]);
     }
 
     const IUniswapV2PairArtifact = await artifacts.readArtifact('IUniswapV2Pair');
@@ -144,7 +144,7 @@ const runBot = async () => {
                 const tx = await pangolinWavaxTether.swap(
                     pangoAmount0,
                     pangoAmount1,
-                    flashSwappyPango.address,
+                    flashSwapPangolinSushi.address,
                     ethers.utils.toUtf8Bytes('1')
                 );
                 console.log('Transaction', tx);

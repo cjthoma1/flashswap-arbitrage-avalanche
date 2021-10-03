@@ -89,7 +89,7 @@ const setupTest = deployments.createFixture(async ({ deployments, getNamedAccoun
     const IUniswapV2Pair = await deployments.getArtifact('IUniswapV2Pair');
     const UNISWAP_WAVAX_USDT_PAIR = new Contract(UNISWAP_WAVAX_USDT_PAIR_ADDRESS, IUniswapV2Pair.abi, signers[1]);
 
-    const flashSwappyPango = await deploy("FlashSwappyPango", {
+    const flashSwapPangolinSushi = await deploy("FlashSwapPangolinSushi", {
         from: deployer,
         log: true,
         args: [SUSHI_SWAP_ROUTER.address, PANGO_FACTORY.address]
@@ -113,7 +113,7 @@ const setupTest = deployments.createFixture(async ({ deployments, getNamedAccoun
         args: [UNISWAP_V2_FACTORY.address],
     });
 
-    const FLASH_SWAP_PANGO = new Contract(flashSwappyPango.address, flashSwappyPango.abi, signers[0]);
+    const FLASH_SWAP_PANGO = new Contract(flashSwapPangolinSushi.address, flashSwapPangolinSushi.abi, signers[0]);
     const FLASH_SWAP_SUSHI = new Contract(flashSwappySushi.address, flashSwappySushi.abi, signers[0]);
     const PANGO_COMPUTE_LQUIDITY = new Contract(pangolinCompute.address, pangolinCompute.abi, signers[0]);
     const UNISWAP_COMPUTE_LQUIDITY = new Contract(sushiswapCompute.address, sushiswapCompute.abi, signers[0]);

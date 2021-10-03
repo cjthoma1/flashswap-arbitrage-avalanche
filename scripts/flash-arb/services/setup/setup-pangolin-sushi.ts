@@ -25,9 +25,9 @@ const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress:
             flashSwapContact = new ethers.Contract(flashSwappySushiDeployed.address, flashSwappySushiDeployed.interface, flashSwappySushiDeployed.signer);
         }
         else if (swapFrom === ContractOptions.PANGOLIN) {
-            const FlashSwappyPango = await ethers.getContractFactory('FlashSwappyPango');
-            const flashSwappyPangoDeployed = await FlashSwappyPango.deploy(sushiSwapRouter, pangolinFactory);
-            flashSwapContact = new ethers.Contract(flashSwappyPangoDeployed.address, flashSwappyPangoDeployed.interface, flashSwappyPangoDeployed.signer);
+            const FlashSwapPangolinSushi = await ethers.getContractFactory('FlashSwapPangolinSushi');
+            const flashSwapPangolinSushiDeployed = await FlashSwapPangolinSushi.deploy(sushiSwapRouter, pangolinFactory);
+            flashSwapContact = new ethers.Contract(flashSwapPangolinSushiDeployed.address, flashSwapPangolinSushiDeployed.interface, flashSwapPangolinSushiDeployed.signer);
         }
     }
     else {
@@ -42,8 +42,8 @@ const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress:
             flashSwapContact = new ethers.Contract('FlashSwappySushi', FlashSwappySushiArtifact.abi, signers[0]);
         }
         else if (swapFrom === ContractOptions.PANGOLIN) {
-            const FlashSwappyPangoArtifact = await artifacts.readArtifact('FlashSwappyPango');
-            flashSwapContact = new ethers.Contract('FlashSwappyPango', FlashSwappyPangoArtifact.abi, signers[0]);
+            const FlashSwapPangolinSushiArtifact = await artifacts.readArtifact('FlashSwapPangolinSushi');
+            flashSwapContact = new ethers.Contract('FlashSwapPangolinSushi', FlashSwapPangolinSushiArtifact.abi, signers[0]);
         }
     }
 
