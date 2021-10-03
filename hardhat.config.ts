@@ -13,7 +13,7 @@ import "hardhat-deploy";
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
 const FORK_FUJI = false;
-const FORK_MAINNET = false;
+const FORK_MAINNET = true;
 const forkingData = FORK_FUJI
   ? {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
@@ -21,6 +21,8 @@ const forkingData = FORK_FUJI
   : FORK_MAINNET
   ? {
       url: "https://api.avax.network/ext/bc/C/rpc",
+      // blockNumber: 5177320 // 5 joe to wavax with (projected profit 1929583186261342 wavax)
+      // blockNumber: 5016623
     }
   : undefined;
 
@@ -79,8 +81,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       gasPrice: 225000000000,
       chainId: !forkingData ? 43112 : 43114, // Only specify a chainId if we are not forking
-      forking: forkingData,
-      // blockNumber: 5016623
+      forking: forkingData
     },
     local: {
       url: 'http://localhost:9650/ext/bc/C/rpc',

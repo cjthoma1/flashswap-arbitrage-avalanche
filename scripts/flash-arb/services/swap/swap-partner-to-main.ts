@@ -62,8 +62,9 @@ const swapPartnerToMain = async (
         // Estimated gas in Avalanche network        
         // Gas Price in AVAX 
         const gasPrice = 0.000000225;
-        const gasLimit = 21000;
-        let gasCost = gasPrice * gasLimit * 3 * 1000000000000000000; // Multiplying by three since we do multiple transactions;
+        // const gasLimit = 21000;
+        const gasLimit = 220000;
+        let gasCost = gasPrice * gasLimit * 1000000000000000000;
     
         console.log('Gas cost', gasCost);
 
@@ -76,11 +77,13 @@ const swapPartnerToMain = async (
                 flashSwapContract.address,
                 ethers.utils.toUtf8Bytes('1')
             );
-            ethers.providers.getTransactionReceipt(tx);
-            console.log('Transaction', tx);
-            console.log('Receipt', tx);
+            const receipt = await ethers.provider.getTransactionReceipt(tx.hash);
+            // console.log('Transaction', tx);
+            // console.log('Receipt',receipt);
+            console.log('Receipt gas used', bigNumberToNumber(receipt.gasUsed));
             console.log('Transcation gasPrice', bigNumberToNumber(tx.gasPrice));
             console.log('Transcation gas gasLimit', bigNumberToNumber(tx.gasLimit));
+            console.log('Gas fee', bigNumberToNumber(receipt.gasUsed.mul(tx.gasLimit)));
         }
     }
     catch (err) {

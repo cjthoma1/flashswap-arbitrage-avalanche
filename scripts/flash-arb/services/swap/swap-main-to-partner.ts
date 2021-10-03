@@ -57,7 +57,7 @@ const swapMainToPartner = async (
             secondaryAmount1
         );
 
-        const profitPrediction = secondaryReserve1.sub(primaryReserve0);
+        let profitPrediction = secondaryReserve1.sub(primaryReserve0);
         console.log('Profit prediction', bigNumberToNumber(profitPrediction));
 
         const { usdt } = await getNamedAccounts()
@@ -65,10 +65,16 @@ const swapMainToPartner = async (
         // Estimated gas in Avalanche network        
         // Gas Price in AVAX 
         const gasPrice = 0.000000225;
-        const gasLimit = 21000;
-        let gasCost = gasPrice * gasLimit * 3; // Multiplying by three since we do multiple transactions;
+        // const gasLimit = 21000;
+        const gasLimit = 220000;
+        let gasCost = gasPrice * gasLimit; // Multiplying by three since we do multiple transactions;
         if (partnerTokenAddress === usdt) {
             gasCost *= 1000000;
+
+           const price = bigNumberToNumber(expandToXDecimals(secondaryReserve1, 12)) / bigNumberToNumber(secondaryReserve0);
+           profitPrediction = (profitPrediction / price);
+           console.log('Price', price);
+           console.log('Average', profitPrediction / price);
         }
         else {
             gasCost *= 1000000000000000000;
@@ -76,13 +82,8 @@ const swapMainToPartner = async (
         
         console.log('Gas cost', gasCost);
 
-        const price = bigNumberToNumber(expandToXDecimals(secondaryReserve1, 12)) / bigNumberToNumber(secondaryReserve0);
-
-        console.log('Price', price);
-        console.log('Average', profitPrediction / price);
-
         // If profit prediction is greater then gas then perform the swap
-        if ((profitPrediction / price)  > gasCost) {
+        if (profitPrediction  > gasCost) {
             console.log('This is where we would perform the flash swap');
             const tx = await primaryTokenPair.swap(
                 primaryAmount0,
@@ -90,7 +91,13 @@ const swapMainToPartner = async (
                 flashSwapContract.address,
                 ethers.utils.toUtf8Bytes('1')
             );
-            console.log('Transaction', tx);
+            // console.log('Transaction', tx);
+            const receipt = await ethers.provider.getTransactionReceipt(tx.hash);
+            // console.log('Receipt',receipt);
+            console.log('Receipt gas used', bigNumberToNumber(receipt.gasUsed));
+            console.log('Transcation gasPrice', bigNumberToNumber(tx.gasPrice));
+            console.log('Transcation gas gasLimit', bigNumberToNumber(tx.gasLimit));
+            console.log('Gas fee', bigNumberToNumber(receipt.gasUsed.mul(tx.gasLimit)));
         }
     }
     catch (err) {
