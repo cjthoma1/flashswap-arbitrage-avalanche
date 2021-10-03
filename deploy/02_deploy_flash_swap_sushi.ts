@@ -12,13 +12,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     pangolinRouter
   } = await getNamedAccounts();
 
-  const flashSwappySushi = await deploy("FlashSwappySushi", {
+  const flashSwapSushiPango = await deploy("FlashSwapSushiPango", {
     from: deployer,
     log: true,
     args: [sushiSwapFactory, pangolinRouter]
   });
 
-  console.log(`FlashSwappySushi deployed to: ${flashSwappySushi.address}`);
+  console.log(`FlashSwapSushiPango deployed to: ${flashSwapSushiPango.address}`);
 };
 
 export default func;

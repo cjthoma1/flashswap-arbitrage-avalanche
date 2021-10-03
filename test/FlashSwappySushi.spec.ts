@@ -5,8 +5,8 @@ import { expandTo18Decimals, bigNumberToNumber, isLocalEnv } from '../shared/uti
 import { expect } from 'chai';
 import setupTest from './test-fixture';
 
-describe('FlashSwappySushi', () => {
-	let FlashSwappySushi: Contract;
+describe('FlashSwapSushiPango', () => {
+	let FlashSwapSushiPango: Contract;
 	let Wavax: Contract;
 	let Usdt: Contract;
 	let PangoWavaxUsdt: Contract;
@@ -21,7 +21,7 @@ describe('FlashSwappySushi', () => {
 			Usdt = USDT;
 			PangoWavaxUsdt = PANGO_WAVAX_USDT_PAIR;
 			SushiSwapWavaxUsdt = UNISWAP_WAVAX_USDT_PAIR;
-			FlashSwappySushi = FLASH_SWAP_SUSHI;
+			FlashSwapSushiPango = FLASH_SWAP_SUSHI;
 		}
 	});
 
@@ -65,14 +65,14 @@ describe('FlashSwappySushi', () => {
 		await SushiSwapWavaxUsdt.swap(
 			amount0,
 			amount1,
-			FlashSwappySushi.address,
+			FlashSwapSushiPango.address,
 			ethers.utils.toUtf8Bytes('1')
 		);
 
 		estimatedGas = await SushiSwapWavaxUsdt.estimateGas.swap(
 			amount0,
 			amount1,
-			FlashSwappySushi.address,
+			FlashSwapSushiPango.address,
 			ethers.utils.toUtf8Bytes('1')
 		);
 
@@ -148,7 +148,7 @@ describe('FlashSwappySushi', () => {
 		await SushiSwapWavaxUsdt.swap(
 			amount0,
 			amount1,
-			FlashSwappySushi.address,
+			FlashSwapSushiPango.address,
 			ethers.utils.toUtf8Bytes('1')
 		);
 

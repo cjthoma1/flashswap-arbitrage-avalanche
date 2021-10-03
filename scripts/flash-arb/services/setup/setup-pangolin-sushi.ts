@@ -20,9 +20,9 @@ const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress:
         pangolinLiquidityCompute = new ethers.Contract(pangolinSwapComputeDeployed.address, pangolinSwapComputeDeployed.interface, pangolinSwapComputeDeployed.signer);
 
         if (swapFrom === ContractOptions.SUSHI_SWAP) {
-            const FlashSwappySushi = await ethers.getContractFactory('FlashSwappySushi');
-            const flashSwappySushiDeployed = await FlashSwappySushi.deploy(pangolinRouter, sushiSwapFactory);
-            flashSwapContact = new ethers.Contract(flashSwappySushiDeployed.address, flashSwappySushiDeployed.interface, flashSwappySushiDeployed.signer);
+            const FlashSwapSushiPango = await ethers.getContractFactory('FlashSwapSushiPango');
+            const flashSwapSushiPangoDeployed = await FlashSwapSushiPango.deploy(pangolinRouter, sushiSwapFactory);
+            flashSwapContact = new ethers.Contract(flashSwapSushiPangoDeployed.address, flashSwapSushiPangoDeployed.interface, flashSwapSushiPangoDeployed.signer);
         }
         else if (swapFrom === ContractOptions.PANGOLIN) {
             const FlashSwapPangolinSushi = await ethers.getContractFactory('FlashSwapPangolinSushi');
@@ -38,8 +38,8 @@ const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress:
         pangolinLiquidityCompute = new ethers.Contract('PangolinComputeLiquidityValue', PangolinComputeLiquidityValueArtifact.abi, signers[0]);
 
         if (swapFrom === ContractOptions.SUSHI_SWAP) {
-            const FlashSwappySushiArtifact = await artifacts.readArtifact('FlashSwappySushi');
-            flashSwapContact = new ethers.Contract('FlashSwappySushi', FlashSwappySushiArtifact.abi, signers[0]);
+            const FlashSwapSushiPangoArtifact = await artifacts.readArtifact('FlashSwapSushiPango');
+            flashSwapContact = new ethers.Contract('FlashSwapSushiPango', FlashSwapSushiPangoArtifact.abi, signers[0]);
         }
         else if (swapFrom === ContractOptions.PANGOLIN) {
             const FlashSwapPangolinSushiArtifact = await artifacts.readArtifact('FlashSwapPangolinSushi');
