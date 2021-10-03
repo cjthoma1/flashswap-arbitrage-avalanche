@@ -1,5 +1,6 @@
 import { bigNumberToNumber, expandToXDecimals, expandTo18Decimals } from '../../../../shared/utilities';
 import { Contract, BigNumber } from 'ethers';
+import { getNamedAccounts } from 'hardhat';
 
 const swapMainToPartner = async (
     arbitrageAmount: BigNumber, primaryTokenPair: Contract, secondaryTokenPair: Contract, mainTokenAddress: string, 
@@ -59,21 +60,29 @@ const swapMainToPartner = async (
         const profitPrediction = secondaryReserve1.sub(primaryReserve0);
         console.log('Profit prediction', bigNumberToNumber(profitPrediction));
 
+        const { usdt } = await getNamedAccounts()
+
         // Estimated gas in Avalanche network        
         // Gas Price in AVAX 
         const gasPrice = 0.000000225;
         const gasLimit = 21000;
-        const gasCost = gasPrice * gasLimit * 3; // Multiplying by three since we do multiple transactions;
-        const gasCostFormatted = bigNumberToNumber(expandTo18Decimals(gasCost));
+        let gasCost = gasPrice * gasLimit * 3; // Multiplying by three since we do multiple transactions;
+        if (partnerTokenAddress === usdt) {
+            gasCost *= 1000000;
+        }
+        else {
+            gasCost *= 1000000000000000000;
+        }
         
         console.log('Gas cost', gasCost);
-        console.log('Gas cost formatted', gasCostFormatted);
 
         const price = bigNumberToNumber(expandToXDecimals(secondaryReserve1, 12)) / bigNumberToNumber(secondaryReserve0);
 
         console.log('Price', price);
+        console.log('Average', profitPrediction / price);
+
         // If profit prediction is greater then gas then perform the swap
-        if (bigNumberToNumber(profitPrediction.div(price)) > +gasCostFormatted) {
+        if ((profitPrediction / price)  > gasCost) {
             console.log('This is where we would perform the flash swap');
             const tx = await primaryTokenPair.swap(
                 primaryAmount0,

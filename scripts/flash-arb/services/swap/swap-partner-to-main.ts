@@ -63,14 +63,12 @@ const swapPartnerToMain = async (
         // Gas Price in AVAX 
         const gasPrice = 0.000000225;
         const gasLimit = 21000;
-        const gasCost = gasPrice * gasLimit * 3; // Multiplying by three since we do multiple transactions;
-        const gasCostFormatted = bigNumberToNumber(expandTo18Decimals(gasCost));
-        
+        let gasCost = gasPrice * gasLimit * 3 * 1000000000000000000; // Multiplying by three since we do multiple transactions;
+    
         console.log('Gas cost', gasCost);
-        console.log('Gas cost formatted', gasCostFormatted);
 
         // If profit prediction is greater then gas then perform the swap
-        if (bigNumberToNumber(profitPrediction) > gasCostFormatted) {
+        if (bigNumberToNumber(profitPrediction) > gasCost) {
             console.log('This is where we would perform the flash swap');
             const tx = await primaryTokenPair.swap(
                 primaryAmount0,
