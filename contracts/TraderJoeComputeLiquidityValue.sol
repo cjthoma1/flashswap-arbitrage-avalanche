@@ -92,9 +92,9 @@ contract TraderJoeComputeLiquidityValue {
         reserves = JoeLibrary.getAmountsIn(factory, amountToken, path);
 
         console.log('Path 0',  path[0]);
-        console.log('Uni Reserves 0', reserves[0]);
+        console.log('Trader Joe Reserves 0', reserves[0]);
         console.log('Path 1',  path[1]);
-        console.log('Uni Reserves 1', reserves[1]);
+        console.log('Trader Joe Reserves 1', reserves[1]);
     }
 
     function getReservesDuringArbitrage(
@@ -112,10 +112,9 @@ contract TraderJoeComputeLiquidityValue {
 
         amounts = JoeLibrary.getAmountsOut(factory, amountIn, path);
         console.log('Path 0',  path[0]);
-        console.log('Uni Amounts 0', amounts[0]);
+        console.log('Trader Joe Amounts 0', amounts[0]);
         console.log('Path 1',  path[1]);
-        console.log('Uni Amounts 1', amounts[1]);
-        console.log('Uni Amount Out', amountOutMin);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'TraderJoeArbitrageLibrary: INSUFFICIENT_OUTPUT_AMOUNT');
-    }
+        console.log('Trader Joe Amounts 1', amounts[1]);
+        console.log('Trader Joe Amount Min', amountOutMin);       
+        require(amounts[amounts.length - 1] >= amountOutMin, 'TraderJoeArbitrageLibrary: INSUFFICIENT_OUTPUT_AMOUNT');    }
 }

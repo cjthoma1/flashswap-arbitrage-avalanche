@@ -78,7 +78,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       gasPrice: 225000000000,
-      chainId: !forkingData ? 43112 : 43114, //Only specify a chainId if we are not forking
+      chainId: !forkingData ? 43112 : 43114, // Only specify a chainId if we are not forking
       forking: forkingData,
       // blockNumber: 5016623
     },

@@ -92,9 +92,9 @@ contract SushiswapV2ComputeLiquidityValue {
         reserves = UniswapV2Library.getAmountsIn(factory, amountToken, path);
 
         console.log('Path 0',  path[0]);
-        console.log('Uni Reserves 0', reserves[0]);
+        console.log('Sushi Reserves 0', reserves[0]);
         console.log('Path 1',  path[1]);
-        console.log('Uni Reserves 1', reserves[1]);
+        console.log('Sushi Reserves 1', reserves[1]);
     }
 
     function getReservesDuringArbitrage(
@@ -112,10 +112,10 @@ contract SushiswapV2ComputeLiquidityValue {
 
         amounts = UniswapV2Library.getAmountsOut(factory, amountIn, path);
         console.log('Path 0',  path[0]);
-        console.log('Uni Amounts 0', amounts[0]);
+        console.log('Sushi Amounts 0', amounts[0]);
         console.log('Path 1',  path[1]);
-        console.log('Uni Amounts 1', amounts[1]);
-        console.log('Uni Amount Out', amountOutMin);
+        console.log('Sushi Amounts 1', amounts[1]);
+        console.log('Sushi Amount Min', amountOutMin);
         require(amounts[amounts.length - 1] >= amountOutMin, 'UniswapV2ArbitrageLibrary: INSUFFICIENT_OUTPUT_AMOUNT');
     }
 }
