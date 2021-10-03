@@ -15,7 +15,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const flashSwapSushiPango = await deploy("FlashSwapSushiPango", {
     from: deployer,
     log: true,
-    args: [sushiSwapFactory, pangolinRouter]
+    args: [pangolinRouter, sushiSwapFactory]
   });
 
   console.log(`FlashSwapSushiPango deployed to: ${flashSwapSushiPango.address}`);

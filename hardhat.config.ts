@@ -13,7 +13,7 @@ import "hardhat-deploy";
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
 const FORK_FUJI = false;
-const FORK_MAINNET = true;
+const FORK_MAINNET = false;
 const forkingData = FORK_FUJI
   ? {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
