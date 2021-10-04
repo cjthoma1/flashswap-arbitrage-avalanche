@@ -9,7 +9,6 @@ import '@sushiswap/core/contracts/uniswapv2/libraries/UniswapV2Library.sol';
 import '@sushiswap/core/contracts/uniswapv2/libraries/TransferHelper.sol';
 
 import '@pangolindex/exchange-contracts/contracts/pangolin-periphery/interfaces/IPangolinRouter.sol';
-import 'hardhat/console.sol';
 
 contract FlashSwapSushiPango is IUniswapV2Callee {
   address immutable sushiFactory;
@@ -33,11 +32,6 @@ contract FlashSwapSushiPango is IUniswapV2Callee {
       address pair = UniswapV2Library.pairFor(sushiFactory, token0, token1);
       require(msg.sender == UniswapV2Library.pairFor(sushiFactory, token0, token1), "Unauthorized"); 
       require(_amount0 == 0 || _amount1 == 0);
-      // console.log('Token 0', token0);
-      // console.log('Token 1', token1);
-      console.log('Amount 0', _amount0);
-      console.log('Amount 1', _amount1);
-      console.log('Amount token', amountToken);
 
       sushiPath[0] = _amount0 == 0 ? token0 : token1;
       sushiPath[1] = _amount0 == 0 ? token1 : token0;
@@ -49,16 +43,11 @@ contract FlashSwapSushiPango is IUniswapV2Callee {
       IERC20 partnerToken = IERC20(_amount0 == 0 ? token0 : token1);
       
       token.approve(address(pangolinRouter), amountToken);
-      console.log('Pango Path 0', pangoPath[0]);
-      console.log('Pango Path 1',  pangoPath[1]);
 
       // no need for require() check, if amount required is not sent sushiRouter will revert
       uint amountRequired = UniswapV2Library.getAmountsIn(sushiFactory, amountToken, sushiPath)[0];
-      console.log('Amount required', amountRequired);
       uint amountReceived = pangolinRouter.swapExactTokensForTokens(amountToken, amountRequired, pangoPath, address(this), deadline)[1];
-      console.log('Amount Received', amountReceived);
       assert(amountReceived > amountRequired); // fail if we didn't get enough tokens back to repay our flash loan
-      console.log('Profit should be', amountReceived - amountRequired);
 
       TransferHelper.safeTransfer(address(partnerToken), msg.sender, amountRequired); // return tokens to Sushiswap pair
       TransferHelper.safeTransfer(address(partnerToken), sender, amountReceived - amountRequired); // PROFIT!!!

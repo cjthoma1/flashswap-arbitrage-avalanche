@@ -92,12 +92,13 @@ const swapMainToPartner = async (
                 ethers.utils.toUtf8Bytes('1')
             );
             // console.log('Transaction', tx);
-            const receipt = await ethers.provider.getTransactionReceipt(tx.hash);
             // console.log('Receipt',receipt);
+            const receipt = await ethers.provider.getTransactionReceipt(tx.hash);
             console.log('Receipt gas used', bigNumberToNumber(receipt.gasUsed));
             console.log('Transcation gasPrice', bigNumberToNumber(tx.gasPrice));
             console.log('Transcation gas gasLimit', bigNumberToNumber(tx.gasLimit));
             console.log('Gas fee', bigNumberToNumber(receipt.gasUsed.mul(tx.gasLimit)));
+            console.log('Profit', bigNumberToNumber(profitPrediction));
         }
     }
     catch (err) {

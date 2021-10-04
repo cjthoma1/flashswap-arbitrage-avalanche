@@ -88,11 +88,6 @@ contract PangolinComputeLiquidityValue {
         path[1] = amount0 == 0 ? token1 : token0;
     
         reserves = PangolinLibrary.getAmountsIn(factory, amountToken, path);
-
-        console.log('Path 0',  path[0]);
-        console.log('Pangolin Reserves 0', reserves[0]);
-        console.log('Path 1',  path[1]);
-        console.log('Pangolin Reserves 1', reserves[1]);
     }
 
     function getReservesDuringArbitrage(
@@ -109,12 +104,8 @@ contract PangolinComputeLiquidityValue {
         path[1] = token1;
 
         amounts = PangolinLibrary.getAmountsOut(factory, amountIn, path);
-        console.log('Path 0',  path[0]);
-        console.log('Pangolin Amounts 0', amounts[0]);
-        console.log('Path 1',  path[1]);
         console.log('Pangolin Amounts 1', amounts[1]);
         console.log('Pangolin Amount Out', amountOutMin);
-
         require(amounts[amounts.length - 1] >= amountOutMin, 'PangoArbitrageLibrary: INSUFFICIENT_OUTPUT_AMOUNT');
     }
 }

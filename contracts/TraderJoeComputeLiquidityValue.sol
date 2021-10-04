@@ -6,7 +6,6 @@ import "@traderjoe-xyz/core/contracts/traderjoe/libraries/JoeLibrary.sol";
 
 import '@uniswap/lib/contracts/libraries/Babylonian.sol';
 import '@pangolindex/exchange-contracts/contracts/pangolin-lib/libraries/FullMath.sol';
-
 import "hardhat/console.sol";
 
 // library containing some math for dealing with the liquidity shares of a pair, e.g. computing their exact value
@@ -90,11 +89,6 @@ contract TraderJoeComputeLiquidityValue {
         path[1] = amount0 == 0 ? token1 : token0;
 
         reserves = JoeLibrary.getAmountsIn(factory, amountToken, path);
-
-        console.log('Path 0',  path[0]);
-        console.log('Trader Joe Reserves 0', reserves[0]);
-        console.log('Path 1',  path[1]);
-        console.log('Trader Joe Reserves 1', reserves[1]);
     }
 
     function getReservesDuringArbitrage(
@@ -111,10 +105,7 @@ contract TraderJoeComputeLiquidityValue {
         path[1] = token1;
 
         amounts = JoeLibrary.getAmountsOut(factory, amountIn, path);
-        console.log('Path 0',  path[0]);
-        console.log('Trader Joe Amounts 0', amounts[0]);
-        console.log('Path 1',  path[1]);
         console.log('Trader Joe Amounts 1', amounts[1]);
-        console.log('Trader Joe Amount Min', amountOutMin);       
+        console.log('Trader Joe Amount Min', amountOutMin);
         require(amounts[amounts.length - 1] >= amountOutMin, 'TraderJoeArbitrageLibrary: INSUFFICIENT_OUTPUT_AMOUNT');    }
 }

@@ -3,8 +3,7 @@ import { Contract } from "ethers";
 import { network, getNamedAccounts } from "hardhat";
 import {
   isLocalEnv,
-  expandTo18Decimals,
-  bigNumberToNumber,
+  expandTo18Decimals
 } from "../shared/utilities";
 import setupTest from "./test-fixture";
 
@@ -92,9 +91,6 @@ describe("FlashSwapPricePrediction", () => {
           amount1
         );
 
-      console.log("Pango Reserve A", bigNumberToNumber(pangoReserveA));
-      console.log("Pango Reserve B", bigNumberToNumber(pangoReserveB));
-
       expect(pangoReserveA).to.eq("111445447453471525689");
       expect(pangoReserveB).to.eq("1000000000000000000");
 
@@ -120,9 +116,6 @@ describe("FlashSwapPricePrediction", () => {
           amount0,
           amount1
         );
-
-      console.log("Uniswap Reserve A", bigNumberToNumber(uniswapReserveA));
-      console.log("Uniswap Reserve B", bigNumberToNumber(uniswapReserveB));
 
       expect(uniswapReserveA).to.eq("1000000000000000000");
       expect(uniswapReserveB).to.eq("181322178776029826316");

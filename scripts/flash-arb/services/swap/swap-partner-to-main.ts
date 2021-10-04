@@ -84,6 +84,7 @@ const swapPartnerToMain = async (
             console.log('Transcation gasPrice', bigNumberToNumber(tx.gasPrice));
             console.log('Transcation gas gasLimit', bigNumberToNumber(tx.gasLimit));
             console.log('Gas fee', bigNumberToNumber(receipt.gasUsed.mul(tx.gasLimit)));
+            console.log('Profit', bigNumberToNumber(profitPrediction));
         }
     }
     catch (err) {

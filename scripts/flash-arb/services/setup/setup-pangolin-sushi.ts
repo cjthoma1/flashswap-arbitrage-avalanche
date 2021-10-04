@@ -68,11 +68,14 @@ const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress:
         signers[0]
     );
 
+    console.log('Sushiswap Pair', sushiTokenPair.address);
     const pangolinTokenPair = new ethers.Contract(
         await pangolinFactoryContract.getPair(firstTokenAddress, secondTokenAddress),
         IPangolinPairArtifact.abi,
         signers[0]
     );
+
+    console.log('Pangolin Pair', pangolinTokenPair.address);
 
     return {
         sushiTokenPair,

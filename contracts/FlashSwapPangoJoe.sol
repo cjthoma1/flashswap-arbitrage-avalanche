@@ -9,8 +9,6 @@ import "@pangolindex/exchange-contracts/contracts/pangolin-lib/libraries/Transfe
 
 import "@traderjoe-xyz/core/contracts/traderjoe/interfaces/IJoeRouter02.sol";
 
-import "hardhat/console.sol";
-
 contract FlashSwapPangoJoe is IPangolinCallee {
   address immutable pangolinFactory;
 
@@ -51,23 +49,16 @@ contract FlashSwapPangoJoe is IPangolinCallee {
       uint amountRequired = PangolinLibrary.getAmountsIn(pangolinFactory, amountToken, pangoPath)[0];
 
       uint amountReceived = joeRouter.swapExactTokensForTokens(amountToken, amountRequired, joePath, address(this), deadline)[1];
-      console.log('Amount Received', amountReceived);
       assert(amountReceived > amountRequired); // fail if we didn't get enough tokens back to repay our flash loan
 
-      console.log('Profit should be', amountReceived - amountRequired);
-
       uint balance = partnerToken.balanceOf(msg.sender);
-      console.log('Partner Token Balance Pango', balance);
 
       balance = partnerToken.balanceOf(address(this));
-      console.log('Partner Token Balance Contract', balance);
 
       TransferHelper.safeTransfer(address(partnerToken), msg.sender, amountRequired); // return tokens to Pangolin pair
       TransferHelper.safeTransfer(address(partnerToken), sender, amountReceived - amountRequired); // PROFIT!!!
 
       balance = partnerToken.balanceOf(address(this));
-      console.log('Contract Token Balance after Profit withdrawn', balance);
       balance = partnerToken.balanceOf(sender);
-      console.log('My Token Balance after Profit', balance);
   }
 }

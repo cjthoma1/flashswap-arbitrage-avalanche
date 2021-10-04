@@ -15,8 +15,6 @@ describe("FlashSwapSushiPango", () => {
   let Usdt: Contract;
   let PangoWavaxUsdt: Contract;
   let SushiSwapWavaxUsdt: Contract;
-  let gasPrice: BigNumber;
-  let estimatedGas: BigNumber;
 
   beforeEach(async () => {
     if (isLocalEnv(network.name)) {
@@ -84,26 +82,6 @@ describe("FlashSwapSushiPango", () => {
       FlashSwapSushiPango.address,
       ethers.utils.toUtf8Bytes("1")
     );
-
-    estimatedGas = await SushiSwapWavaxUsdt.estimateGas.swap(
-      amount0,
-      amount1,
-      FlashSwapSushiPango.address,
-      ethers.utils.toUtf8Bytes("1")
-    );
-
-    // The gas price (in wei)...
-    gasPrice = await ethers.provider.getGasPrice();
-    let gasCost = gasPrice.mul(estimatedGas);
-    gasCost = gasCost.add(gasCost.div(BigNumber.from("30")));
-    console.log("Formated gas", ethers.utils.formatUnits(estimatedGas));
-    // Converts gas price from wei to eth
-    console.log("Formated gas price", ethers.utils.formatUnits(gasPrice));
-    console.log("Formated gas cost", ethers.utils.formatUnits(gasCost));
-
-    console.log("Estimated gas price", gasPrice.toNumber());
-    console.log("Estimated Gas", estimatedGas.toNumber());
-    console.log("Estimated gas cost", gasCost.toNumber());
 
     const balanceAfter = await Usdt.balanceOf(user);
 
