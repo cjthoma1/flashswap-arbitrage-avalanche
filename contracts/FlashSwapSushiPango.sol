@@ -29,7 +29,6 @@ contract FlashSwapSushiPango is IUniswapV2Callee {
       
       address token0 = IUniswapV2Pair(msg.sender).token0(); // fetch the address of token0 AVAX
       address token1 = IUniswapV2Pair(msg.sender).token1(); // fetch the address of token1 USDT
-      address pair = UniswapV2Library.pairFor(sushiFactory, token0, token1);
       require(msg.sender == UniswapV2Library.pairFor(sushiFactory, token0, token1), "Unauthorized"); 
       require(_amount0 == 0 || _amount1 == 0);
 

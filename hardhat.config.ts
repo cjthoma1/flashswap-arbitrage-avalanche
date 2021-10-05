@@ -21,7 +21,21 @@ const forkingData = FORK_FUJI
   : FORK_MAINNET
   ? {
       url: "https://api.avax.network/ext/bc/C/rpc",
-      // blockNumber: 5177320 // 5 joe to wavax with (projected profit 1929583186261342 wavax)
+      // blockNumber: 5177320 // 5 joe to wavax pangolin to traderjoe (projected profit 1929583186261342 wavax)
+      // blockNumber: 5249335 // 5 usdt to wavax sushi to pangolin (projected profit 808954986702980 wavax)
+      // blockNumber: 5249426 // 5 usdt to wavax sushi to pangolin (projected profit 989513321016076 wavax)
+      // blockNumber: 5249523 // 5 usdt to wavax sushi to panglin (projected profit 975636811072329 wavax)
+      // blockNumber: 5249586 // 10 usdt to wavax sushi to pangolin (project profit 470658700559315 wavax)
+      // blockNumber: 5249692 // 10 usdt to wavax sushi to pangolin (project profit 1135402592789238 wavax)
+      // blockNumber: 5251297 // 10 joe to wavax traderjoe to pangolin (projected profit 243778322177914 wavax)
+      // blockNumber: 5251439 // 10 joe to wavax traderjoe to pangolin (projected profit 1190372056744608 wavax)
+      // blockNumber: 5251468 // 1 wavax to joe pangolin to traderjoe (projected profit 75516005670000000 wavax aka 0.07551600566917815)
+      // blockNumber: 5251556 // 50 joe to wavax traderjoe to pangolin (projected profit 3403556492944739 wavax)
+      // blockNumber: 5251618 // 75 joe to wavax traderjoe to pangolin (projected profit 24475828070000000 wavax aka 0.024475828065500242)
+      // blockNumber: 5251870 // 75 joe to wavax traderjoe to pangolin (projected profit 15500747114593090 wavax aka 0.01550074711459309)
+      // blockNumber: 5251864 // 1 wavax to joe pangolin to traderjoe (projected profit 177607747793017341 wavax aka 0.17760774779301733) // Gas used 206229 // Gas price 1200000000000 // Gas fee 53661198258
+      // blockNumber: 5252617 // 1 wavax to joe pangolin to traderjoe (projected profit 162499252421836495 wavax aka 0.1624992524218365) // Gas used 206229 // Gas price 1200000000000 // Gas fee 53661198258
+      // blockNumber: 5252814 // 1 wavax to joe traderjoe to pangolin (projected profit 239483049727551773 wavax aka 0.239483049727551773)
       // blockNumber: 5016623
     }
   : undefined;
@@ -79,7 +93,8 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
-      gasPrice: 225000000000,
+      // gasPrice: 225000000000,
+      gasPrice: 1200000000000,
       chainId: !forkingData ? 43112 : 43114, // Only specify a chainId if we are not forking
       forking: forkingData
     },

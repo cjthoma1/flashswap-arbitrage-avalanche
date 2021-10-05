@@ -7,8 +7,6 @@ import "@sushiswap/core/contracts/uniswapv2/libraries/UniswapV2Library.sol";
 import '@uniswap/lib/contracts/libraries/Babylonian.sol';
 import '@pangolindex/exchange-contracts/contracts/pangolin-lib/libraries/FullMath.sol';
 
-import "hardhat/console.sol";
-
 // library containing some math for dealing with the liquidity shares of a pair, e.g. computing their exact value
 // in terms of the underlying tokens
 contract SushiswapV2ComputeLiquidityValue {
@@ -106,8 +104,5 @@ contract SushiswapV2ComputeLiquidityValue {
         path[1] = token1;
 
         amounts = UniswapV2Library.getAmountsOut(factory, amountIn, path);
-        console.log('Sushi Amounts 1', amounts[1]);
-        console.log('Sushi Amount Min', amountOutMin);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'UniswapV2ArbitrageLibrary: INSUFFICIENT_OUTPUT_AMOUNT');
     }
 }

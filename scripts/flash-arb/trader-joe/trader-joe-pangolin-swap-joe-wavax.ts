@@ -15,7 +15,7 @@ const runBot = async () => {
 
     const blockListener = ethers.provider.on("block", async (blockNumber) => {
         console.log('Block Number', blockNumber)
-        await swapMainToPartner(expandTo18Decimals(5), traderJoeTokenPair, pangolinTokenPair, joeToken, wavax, traderJoeLiquidityCompute, pangolinLiquidityCompute, flashSwapContact);
+        await swapMainToPartner(expandTo18Decimals(75), traderJoeTokenPair, pangolinTokenPair, joeToken, wavax, traderJoeLiquidityCompute, pangolinLiquidityCompute, flashSwapContact);
 
         // If we running locally then kill the listener
         if (isLocalEnv(network.name)) {

@@ -5,7 +5,6 @@ import '@pangolindex/exchange-contracts/contracts/pangolin-lib/libraries/Babylon
 import "@pangolindex/exchange-contracts/contracts/pangolin-periphery/libraries/PangolinLibrary.sol";
 import '@pangolindex/exchange-contracts/contracts/pangolin-periphery/libraries/SafeMath.sol';
 import '@pangolindex/exchange-contracts/contracts/pangolin-lib/libraries/FullMath.sol';
-import "hardhat/console.sol";
 
 // library containing some math for dealing with the liquidity shares of a pair, e.g. computing their exact value
 // in terms of the underlying tokens
@@ -104,8 +103,5 @@ contract PangolinComputeLiquidityValue {
         path[1] = token1;
 
         amounts = PangolinLibrary.getAmountsOut(factory, amountIn, path);
-        console.log('Pangolin Amounts 1', amounts[1]);
-        console.log('Pangolin Amount Out', amountOutMin);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'PangoArbitrageLibrary: INSUFFICIENT_OUTPUT_AMOUNT');
     }
 }

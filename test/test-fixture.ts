@@ -65,7 +65,7 @@ const setupTest = deployments.createFixture(
       from: deployer,
       log: true,
       contract: UniswapV2Factory,
-      args: [deployer],
+      args: [deployer]
     });
     const UNISWAP_V2_FACTORY = new Contract(
       uniswapFactory.address,

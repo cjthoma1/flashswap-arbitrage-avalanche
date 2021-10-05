@@ -6,7 +6,6 @@ import "@traderjoe-xyz/core/contracts/traderjoe/libraries/JoeLibrary.sol";
 
 import '@uniswap/lib/contracts/libraries/Babylonian.sol';
 import '@pangolindex/exchange-contracts/contracts/pangolin-lib/libraries/FullMath.sol';
-import "hardhat/console.sol";
 
 // library containing some math for dealing with the liquidity shares of a pair, e.g. computing their exact value
 // in terms of the underlying tokens
@@ -105,7 +104,5 @@ contract TraderJoeComputeLiquidityValue {
         path[1] = token1;
 
         amounts = JoeLibrary.getAmountsOut(factory, amountIn, path);
-        console.log('Trader Joe Amounts 1', amounts[1]);
-        console.log('Trader Joe Amount Min', amountOutMin);
-        require(amounts[amounts.length - 1] >= amountOutMin, 'TraderJoeArbitrageLibrary: INSUFFICIENT_OUTPUT_AMOUNT');    }
+    }
 }
