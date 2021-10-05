@@ -13,7 +13,7 @@ import "hardhat-deploy";
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
 const FORK_FUJI = false;
-const FORK_MAINNET = true;
+const FORK_MAINNET = false;
 const forkingData = FORK_FUJI
   ? {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
@@ -132,8 +132,8 @@ const config: HardhatUserConfig = {
     deployer: {
       default: 0, // here this will by default take the first account as deployer
       hardhat: 0, // similarly on hardhat it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
-      fuji: "0x4884afd54ecaefa29aeefc051d579c998a6f5dda",
-      mainnet: "0x4884afd54ecaefa29aeefc051d579c998a6f5dda",
+      fuji: "0xC833bD3a6BCC62A009bF82A554663163961D17da",
+      mainnet: "0xC833bD3a6BCC62A009bF82A554663163961D17da",
     },
     user: { // Used for testing
       default: 1, 

@@ -1,10 +1,7 @@
 import { expect } from "chai";
 import { Contract } from "ethers";
 import { network, getNamedAccounts } from "hardhat";
-import {
-  isLocalEnv,
-  expandTo18Decimals
-} from "../shared/utilities";
+import { isLocalEnv, expandTo18Decimals } from "../shared/utilities";
 import setupTest from "./test-fixture";
 
 describe("FlashSwapPricePrediction", () => {

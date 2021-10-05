@@ -1,8 +1,8 @@
 import { deployments } from "hardhat";
 import PangolinFactory from "@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/PangolinFactory.sol/PangolinFactory.json";
 import PangolinRouter from "@pangolindex/exchange-contracts/artifacts/contracts/pangolin-periphery/PangolinRouter.sol/PangolinRouter.json";
-import UniswapV2Factory from "./test-artifacts/uniswapv2/UniswapV2Factory.sol/UniswapV2Factory.json";
-import UniswapV2Router02 from "./test-artifacts/uniswapv2/UniswapV2Router02.sol/UniswapV2Router02.json";
+import UniswapV2Factory from "./test-artifacts/sushiswap/UniswapV2Factory.json";
+import UniswapV2Router02 from "./test-artifacts/sushiswap/UniswapV2Router02.json";
 import { expandTo18Decimals } from "../shared/utilities";
 import { Contract } from "ethers";
 
@@ -65,7 +65,7 @@ const setupTest = deployments.createFixture(
       from: deployer,
       log: true,
       contract: UniswapV2Factory,
-      args: [deployer]
+      args: [deployer],
     });
     const UNISWAP_V2_FACTORY = new Contract(
       uniswapFactory.address,
