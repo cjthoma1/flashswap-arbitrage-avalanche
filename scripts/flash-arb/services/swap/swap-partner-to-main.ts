@@ -58,11 +58,11 @@ const swapPartnerToMain = async (
         );
 
         if (isLocalEnv(network.name)) {
-            console.log('Secondary Reserve', secondaryReserve1);
-            console.log('Primary Reserve', primaryReserve0);
+            console.log('Secondary Reserve', secondaryReserve1.toString());
+            console.log('Primary Reserve', primaryReserve0.toString());
         }
 
-        if (primaryReserve0 > secondaryReserve1) {
+        if (+primaryReserve0.toString() > +secondaryReserve1.toString()) {
             throw Error('Primary reserve larger than secondary reserve');
         }
 
