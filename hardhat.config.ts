@@ -13,7 +13,7 @@ import "hardhat-deploy";
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
 const FORK_FUJI = false;
-const FORK_MAINNET = false;
+const FORK_MAINNET = true;
 const forkingData = FORK_FUJI
   ? {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
@@ -36,6 +36,7 @@ const forkingData = FORK_FUJI
       // blockNumber: 5251864 // 1 wavax to joe pangolin to traderjoe (projected profit 177607747793017341 wavax aka 0.17760774779301733) // Gas used 206229 // Gas price 1200000000000 // Gas fee 53661198258
       // blockNumber: 5252617 // 1 wavax to joe pangolin to traderjoe (projected profit 162499252421836495 wavax aka 0.1624992524218365) // Gas used 206229 // Gas price 1200000000000 // Gas fee 53661198258
       // blockNumber: 5252814 // 1 wavax to joe traderjoe to pangolin (projected profit 239483049727551773 wavax aka 0.239483049727551773)
+      // blockNumber: 5306013 // 1 wavax to joe traderjoe to pangolin (projected profit 50809123602056431 wavax aka 0.050809123602056431)
       // blockNumber: 5016623
     }
   : undefined;
@@ -70,31 +71,73 @@ const config: HardhatUserConfig = {
     compilers: [
       {
         version: "0.5.16",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1337,
+          },
+        }
       },
       {
         version: "0.6.2",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1337,
+          },
+        }
       },
       {
         version: "0.6.4",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1337,
+          },
+        }
       },
       {
         version: "0.6.6",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1337,
+          },
+        }
       },
       {
         version: "0.6.12",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1337,
+          },
+        }
       },
       {
         version: "0.7.0",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1337,
+          },
+        }
       },
       {
         version: "0.8.0",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 1337,
+          },
+        }
       },
     ],
   },
   networks: {
     hardhat: {
       // gasPrice: 225000000000,
-      gasPrice: 1200000000000,
+      gasPrice: 'auto',
       chainId: !forkingData ? 43112 : 43114, // Only specify a chainId if we are not forking
       forking: forkingData
     },
@@ -123,7 +166,8 @@ const config: HardhatUserConfig = {
     },
     mainnet: {
       url: "https://api.avax.network/ext/bc/C/rpc",
-      gasPrice: 225000000000,
+      // gasPrice: 225000000000,
+      gasPrice: 'auto',
       chainId: 43114,
       accounts: [],
     },

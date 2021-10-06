@@ -4,7 +4,7 @@ import { network, getNamedAccounts } from "hardhat";
 import { isLocalEnv, expandTo18Decimals } from "../shared/utilities";
 import setupTest from "./test-fixture";
 
-describe("FlashSwapPricePrediction", () => {
+describe("FlashSwapProfitPrediction", () => {
   let Wavax: Contract;
   let Usdt: Contract;
   let PangoComputeLiquidityValue: Contract;
@@ -58,7 +58,7 @@ describe("FlashSwapPricePrediction", () => {
     }
   );
 
-  describe("#getReservesAfterArbitrage", () => {
+  describe("Profit Predicter", () => {
     it("should predict arbitrage swap for for 1 AVAX / 100 X on Pango and 1 AVAX / 200 X on Sushiswap", async () => {
       const arbitrageAmount = expandTo18Decimals(1);
 

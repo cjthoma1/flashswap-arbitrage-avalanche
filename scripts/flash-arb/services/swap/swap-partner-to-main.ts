@@ -63,20 +63,14 @@ const swapPartnerToMain = async (
         }
 
         if (+primaryReserve0.toString() > +secondaryReserve1.toString()) {
-            throw Error('Primary reserve larger than secondary reserve');
+            console.log('Error: Primary reserve larger than secondary reserve');
+            return;
         }
 
         const profitPrediction = secondaryReserve1.sub(primaryReserve0);
 
-        // Estimated gas in Avalanche network        
-        // Gas Price in AVAX 
-        // const gasPrice = 0.0000000225;
-        // const gasLimit = 21000;
-        // const gasPrice = 0.0000012;
-        // const gasCost = gasPrice * 1000000000000000000 * gas;
-
-        const gas = 206229;
-        const gasPrice = 1200000000000;
+        const gas = 202544;
+        const gasPrice = await ethers.provider.getGasPrice();
         const gasCost = gasPrice * gas;
     
         console.log('Estimated Gas Cost', gasCost);
@@ -95,11 +89,12 @@ const swapPartnerToMain = async (
             const logTable = {};
     
             logTable[tx.hash] = {
-              "Gas Limit": bigNumberToNumber(tx.gasLimit),
-              "Gas Used": bigNumberToNumber(receipt.gasUsed),
-              "Gas Price": bigNumberToNumber(tx.gasPrice),
+              "Gas Limit": tx.gasLimit.toString(),
+              "Gas Used": receipt.gasUsed.toString(),
+              "Gas Price": tx.gasPrice.toString(),
               "Gas Fee": receipt.gasUsed.mul(tx.gasPrice).toString(),
-              "Profit": bigNumberToNumber(profitPrediction),
+              "Profit": profitPrediction.toString(),
+              "Net": profitPrediction.sub(receipt.gasUsed.mul(tx.gasPrice)).toString(),
               Timestamp: new Date(Date.now()),
             };
             console.table(logTable);

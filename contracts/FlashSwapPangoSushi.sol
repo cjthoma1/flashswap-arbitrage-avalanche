@@ -21,9 +21,7 @@ contract FlashSwapPangolinSushi is IPangolinCallee {
   }
     // gets tokens/WAVAX via Pangolin flash swap, swaps for the WAVAX/tokens on Uniswap V2, repays Pangolin, and keeps the rest!
   function pangolinCall(address _sender, uint _amount0, uint _amount1, bytes calldata _data) external override {
-      address sender = _sender;
-      address[] memory pangoPath = new address[](2);
-      address[] memory sushiPath = new address[](2);
+      address[] memory path = new address[](2);
 
       uint amountToken = _amount0 == 0 ? _amount1 : _amount0;
       
@@ -31,34 +29,27 @@ contract FlashSwapPangolinSushi is IPangolinCallee {
       address token1 = IPangolinPair(msg.sender).token1(); // fetch the address of token1 USDT
 
       require(msg.sender == PangolinLibrary.pairFor(pangolinFactory, token0, token1), "Unauthorized"); 
-      require(_amount0 == 0 || _amount1 == 0);
+      require(_amount0 == 0 || _amount1 == 0, 'FlashSwapPangolinSushi: ONE_MANDATORY_ZERO_AMOUNT');
 
-      pangoPath[0] = _amount0 == 0 ? token0 : token1;
-      pangoPath[1] = _amount0 == 0 ? token1 : token0;
+      path[0] = _amount0 == 0 ? token0 : token1;
+      path[1] = _amount0 == 0 ? token1 : token0;
 
-      sushiPath[0] = _amount0 == 0 ? token1 : token0;
-      sushiPath[1] = _amount0 == 0 ? token0 : token1;
-
-      IERC20 token = IERC20(_amount0 == 0 ? token1 : token0);
-      IERC20 partnerToken = IERC20(_amount0 == 0 ? token0 : token1);
-      
+      IERC20 token = IERC20(_amount0 == 0 ? token1 : token0);      
       token.approve(address(sushiRouter), amountToken);
 
       // no need for require() check, if amount required is not sent pangolinRouter will revert
+      uint amountRequired = PangolinLibrary.getAmountsIn(pangolinFactory, amountToken, path)[0];
 
-      uint amountRequired = PangolinLibrary.getAmountsIn(pangolinFactory, amountToken, pangoPath)[0];
+      // Need to alternate paths for swapExactTokensForTokens
+      path[0] = _amount0 == 0 ? token1 : token0;
+      path[1] = _amount0 == 0 ? token0 : token1;
 
-      uint amountReceived = sushiRouter.swapExactTokensForTokens(amountToken, amountRequired, sushiPath, address(this), deadline)[1];
+      uint amountReceived = sushiRouter.swapExactTokensForTokens(amountToken, amountRequired, path, address(this), deadline)[1];
       assert(amountReceived > amountRequired); // fail if we didn't get enough tokens back to repay our flash loan
 
-      uint balance = partnerToken.balanceOf(msg.sender);
-
-      balance = partnerToken.balanceOf(address(this));
-
-      TransferHelper.safeTransfer(address(partnerToken), msg.sender, amountRequired); // return tokens to Pangolin pair
-      TransferHelper.safeTransfer(address(partnerToken), sender, amountReceived - amountRequired); // PROFIT!!!
-
-      balance = partnerToken.balanceOf(address(this));
-      balance = partnerToken.balanceOf(sender);
+      // Swap token to partner token
+      token = IERC20(_amount0 == 0 ? token0 : token1);
+      TransferHelper.safeTransfer(address(token), msg.sender, amountRequired); // return tokens to Pangolin pair
+      TransferHelper.safeTransfer(address(token), _sender, amountReceived - amountRequired); // PROFIT!!!
   }
 }
