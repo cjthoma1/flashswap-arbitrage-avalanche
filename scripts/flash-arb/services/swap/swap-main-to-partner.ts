@@ -71,7 +71,7 @@ const swapMainToPartner = async (
 
         const { usdt } = await getNamedAccounts()
 
-        const gas = 202544;
+        const gas = 210000;
         const gasPrice = await ethers.provider.getGasPrice();
         const gasCost = gasPrice * gas;
 

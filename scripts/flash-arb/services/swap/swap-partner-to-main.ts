@@ -69,7 +69,7 @@ const swapPartnerToMain = async (
 
         const profitPrediction = secondaryReserve1.sub(primaryReserve0);
 
-        const gas = 202544;
+        const gas = 210000;
         const gasPrice = await ethers.provider.getGasPrice();
         const gasCost = gasPrice * gas;
     

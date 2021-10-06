@@ -2,9 +2,12 @@ import { task } from "hardhat/config";
 import { HardhatUserConfig } from "hardhat/types";
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 import { BigNumber } from "ethers";
+import dotenv from 'dotenv'
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-deploy";
+
+dotenv.config()
 
 // When using the hardhat network, you may choose to fork Fuji or Avalanche Mainnet
 // This will allow you to debug contracts using the hardhat network while keeping the current network state
@@ -13,7 +16,7 @@ import "hardhat-deploy";
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
 const FORK_FUJI = false;
-const FORK_MAINNET = true;
+const FORK_MAINNET = false;
 const forkingData = FORK_FUJI
   ? {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
@@ -162,31 +165,27 @@ const config: HardhatUserConfig = {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
       gasPrice: 225000000000,
       chainId: 43113,
-      accounts: [],
+      accounts: [`0x${process.env.METAMASK_PRIVATE_KEY}`],
     },
     mainnet: {
       url: "https://api.avax.network/ext/bc/C/rpc",
       // gasPrice: 225000000000,
       gasPrice: 'auto',
       chainId: 43114,
-      accounts: [],
+      accounts: [`0x${process.env.METAMASK_PRIVATE_KEY}`],
     },
   },
   namedAccounts: {
     deployer: {
       default: 0, // here this will by default take the first account as deployer
       hardhat: 0, // similarly on hardhat it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
-      fuji: "0xC833bD3a6BCC62A009bF82A554663163961D17da",
-      mainnet: "0xC833bD3a6BCC62A009bF82A554663163961D17da",
+      fuji: 0,
+      mainnet: 0,
     },
     user: { // Used for testing
       default: 1, 
       hardhat: 1,
     },
-    // safeMath: {
-    //   fuji: '0x165744DB0F6928079e9136cE9F722195cc7b2341',
-    //   mainnet: '0xcaEbc59101a97117552f4d6fCFd5d89A53178C1F'
-    // },
     sushiSwapFactory: {
       default: '0x99653EfFF54a26bc24567A251F74d8A0A9905390',
       hardhat: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
@@ -258,6 +257,34 @@ const config: HardhatUserConfig = {
       hardhat: '0x60781C2586D68229fde47564546784ab3fACA982',
       fuji: '0x6d0A79756774c7cbac6Ce5c5e3b0f40b0ccCcB20',
       mainnet: '0x60781C2586D68229fde47564546784ab3fACA982'
+    },
+    FlashSwapPangolinSushi: {
+      fuji: '0x9a8Fc5F22615b870196964495A23BA874bDa0CAC',
+      mainnet: ''
+    },
+    FlashSwapSushiPango: {
+      fuji: '0x3F57Fba60C2D4Cf51e5220193390c0802e0440ee',
+      mainnet: ''
+    },
+    PangolinComputeLiquidityValue: {
+      fuji: '0x1998eA0830C7A8961d235Fe1F48e02B73Ffbe335',
+      mainnet: ''
+    },
+    SushiswapV2ComputeLiquidityValue: {
+      fuji: '0xe0c855673912B805620545d0372D36861B8FC87B',
+      mainnet: ''
+    },
+    TraderJoeComputeLiquidityValue: {
+      fuji: '0xc32608bBb75c20f09ab5e794F64283A7E4C00e59',
+      mainnet: ''
+    },
+    FlashSwapPangoJoe: {
+      fuji: '0x4493288630f293cF5aFd94F325b85978f7ADE1Cb',
+      mainnet: ''
+    },
+    FlashSwapJoePango: {
+      fuji: '0x75AE8752151746079B66B6B9A7ED1dbe20F156A5',
+      mainnet: ''
     }
   },
   external: {
@@ -268,12 +295,6 @@ const config: HardhatUserConfig = {
       {
         artifacts: "node_modules/@pangolindex/exchange-contracts/artifacts",
       },
-      // {
-      //   artifacts: "node_modules/@uniswap/v2-periphery/build",
-      // },
-      // {
-      //   artifacts: "node_modules/@uniswap/v2-core/build"
-      // },
       {
         artifacts: "node_modules/@traderjoe-xyz/core/artifacts",
       },
@@ -282,9 +303,9 @@ const config: HardhatUserConfig = {
       }
     ],
     deployments: {
-    //   // example: ["node_modules/@cartesi/arbitration/build/contracts"],
+    //   example: ["node_modules/@cartesi/arbitration/build/contracts"],
     //   default: ["node_modules/@uniswap/v2-periphery/build"],
-      // hardhat: ['node_modules/@uniswap/v2-periphery/build', 'node_modules/@uniswap/v2-core/build'],
+    //   hardhat: ['node_modules/@uniswap/v2-periphery/build', 'node_modules/@uniswap/v2-core/build'],
     //   fuji: ['node_modules/@uniswap/v2-periphery/build'],
     //   mainnet: ['node_modules/@uniswap/v2-periphery/builds']
     }
