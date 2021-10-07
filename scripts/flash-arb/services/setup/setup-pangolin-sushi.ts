@@ -5,7 +5,7 @@ import IUniswapV2FactoryAbi from '@sushiswap/core/build/abi/IUniswapV2Factory.js
 import IPangolinFactoryArtifact from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/interfaces/IPangolinFactory.sol/IPangolinFactory.json';
 
 const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress: string, swapFrom: ContractOptions ): Promise<IPangolinSushi> => {
-    const { sushiSwapFactory, pangolinFactory, pangolinRouter, sushiSwapRouter } = await getNamedAccounts();
+    const { sushiSwapFactory, pangolinFactory, pangolinRouter, sushiSwapRouter, sushiswapV2ComputeLiquidityValueAddr, pangolinComputeLiquidityValueAddr, flashSwapSushiPangoAddr, flashSwapPangolinSushiAddr } = await getNamedAccounts();
     const signers = await ethers.getSigners();
     let sushiSwapLiquidityCompute, pangolinLiquidityCompute, flashSwapContact;
 
@@ -34,16 +34,16 @@ const setupPangolinSushi = async (firstTokenAddress: string, secondTokenAddress:
         const SushiswapV2ComputeLiquidityValueArtifact = await artifacts.readArtifact('SushiswapV2ComputeLiquidityValue');
         const PangolinComputeLiquidityValueArtifact = await artifacts.readArtifact('PangolinComputeLiquidityValue');
 
-        sushiSwapLiquidityCompute = new ethers.Contract('SushiswapV2ComputeLiquidityValue', SushiswapV2ComputeLiquidityValueArtifact.abi, signers[0]);
-        pangolinLiquidityCompute = new ethers.Contract('PangolinComputeLiquidityValue', PangolinComputeLiquidityValueArtifact.abi, signers[0]);
+        sushiSwapLiquidityCompute = new ethers.Contract(sushiswapV2ComputeLiquidityValueAddr, SushiswapV2ComputeLiquidityValueArtifact.abi, signers[0]);
+        pangolinLiquidityCompute = new ethers.Contract(pangolinComputeLiquidityValueAddr, PangolinComputeLiquidityValueArtifact.abi, signers[0]);
 
         if (swapFrom === ContractOptions.SUSHI_SWAP) {
             const FlashSwapSushiPangoArtifact = await artifacts.readArtifact('FlashSwapSushiPango');
-            flashSwapContact = new ethers.Contract('FlashSwapSushiPango', FlashSwapSushiPangoArtifact.abi, signers[0]);
+            flashSwapContact = new ethers.Contract(flashSwapSushiPangoAddr, FlashSwapSushiPangoArtifact.abi, signers[0]);
         }
         else if (swapFrom === ContractOptions.PANGOLIN) {
             const FlashSwapPangolinSushiArtifact = await artifacts.readArtifact('FlashSwapPangolinSushi');
-            flashSwapContact = new ethers.Contract('FlashSwapPangolinSushi', FlashSwapPangolinSushiArtifact.abi, signers[0]);
+            flashSwapContact = new ethers.Contract(flashSwapPangolinSushiAddr, FlashSwapPangolinSushiArtifact.abi, signers[0]);
         }
     }
 

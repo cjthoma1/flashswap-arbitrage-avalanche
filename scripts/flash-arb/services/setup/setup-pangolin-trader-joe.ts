@@ -5,7 +5,7 @@ import IJoeFacotryArtifact from '@traderjoe-xyz/core/artifacts/contracts/traderj
 import IPangolinFactoryArtifact from '@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/interfaces/IPangolinFactory.sol/IPangolinFactory.json';
 
 const setupPangolinTraderJoe = async (firstTokenAddress: string, secondTokenAddress: string, swapFrom: ContractOptions ): Promise<IPangolinTraderJoe> => {
-    const { traderJoeFactory, pangolinFactory, pangolinRouter, traderJoeRouter } = await getNamedAccounts();
+    const { traderJoeFactory, pangolinFactory, pangolinRouter, traderJoeRouter, pangolinComputeLiquidityValueAddr, traderJoeComputeLiquidityValueAddr, flashSwapJoePangoAddr, flashSwapPangoJoeAddr } = await getNamedAccounts();
     const signers = await ethers.getSigners();
     let traderJoeLiquidityCompute, pangolinLiquidityCompute, flashSwapContact;
 
@@ -34,16 +34,16 @@ const setupPangolinTraderJoe = async (firstTokenAddress: string, secondTokenAddr
         const TraderJoeComputeLiquidityValueArtifact = await artifacts.readArtifact('TraderJoeComputeLiquidityValue');
         const PangolinComputeLiquidityValueArtifact = await artifacts.readArtifact('PangolinComputeLiquidityValue');
 
-        traderJoeLiquidityCompute = new ethers.Contract('TraderJoeComputeLiquidityValue', TraderJoeComputeLiquidityValueArtifact.abi, signers[0]);
-        pangolinLiquidityCompute = new ethers.Contract('PangolinComputeLiquidityValue', PangolinComputeLiquidityValueArtifact.abi, signers[0]);
+        traderJoeLiquidityCompute = new ethers.Contract(traderJoeComputeLiquidityValueAddr, TraderJoeComputeLiquidityValueArtifact.abi, signers[0]);
+        pangolinLiquidityCompute = new ethers.Contract(pangolinComputeLiquidityValueAddr, PangolinComputeLiquidityValueArtifact.abi, signers[0]);
 
         if (swapFrom === ContractOptions.TRADER_JOE) {
             const FlashSwapJoePango = await artifacts.readArtifact('FlashSwapJoePango');
-            flashSwapContact = new ethers.Contract('FlashSwapJoePango', FlashSwapJoePango.abi, signers[0]);
+            flashSwapContact = new ethers.Contract(flashSwapJoePangoAddr, FlashSwapJoePango.abi, signers[0]);
         }
         else if (swapFrom === ContractOptions.PANGOLIN) {
             const FlashSwapPangoJoeArtifact = await artifacts.readArtifact('FlashSwapPangoJoe');
-            flashSwapContact = new ethers.Contract('FlashSwapPangoJoe', FlashSwapPangoJoeArtifact.abi, signers[0]);
+            flashSwapContact = new ethers.Contract(flashSwapPangoJoeAddr, FlashSwapPangoJoeArtifact.abi, signers[0]);
         }
     }
 
