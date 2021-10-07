@@ -260,31 +260,31 @@ const config: HardhatUserConfig = {
     },
     FlashSwapPangolinSushi: {
       fuji: '0x9a8Fc5F22615b870196964495A23BA874bDa0CAC',
-      mainnet: ''
+      mainnet: '0xf66D30CEb072ea114EeD5444534E0f445e31763B'
     },
     FlashSwapSushiPango: {
       fuji: '0x3F57Fba60C2D4Cf51e5220193390c0802e0440ee',
-      mainnet: ''
+      mainnet: '0x81347bD22546025E37E385739AB189f44D3bA013'
     },
     PangolinComputeLiquidityValue: {
       fuji: '0x1998eA0830C7A8961d235Fe1F48e02B73Ffbe335',
-      mainnet: ''
+      mainnet: '0xE08998b1C3dE1f9Bca9DcFcE945E4bB4DEfD6A7d'
     },
     SushiswapV2ComputeLiquidityValue: {
       fuji: '0xe0c855673912B805620545d0372D36861B8FC87B',
-      mainnet: ''
+      mainnet: '0x6f1B2B1eae80b5C03f27E961162B664789895B85'
     },
     TraderJoeComputeLiquidityValue: {
       fuji: '0xc32608bBb75c20f09ab5e794F64283A7E4C00e59',
-      mainnet: ''
+      mainnet: '0x2Ae1F94eFaC53e0394251E59D46436350dB64C15'
     },
     FlashSwapPangoJoe: {
       fuji: '0x4493288630f293cF5aFd94F325b85978f7ADE1Cb',
-      mainnet: ''
+      mainnet: '0xC433434C62f413Ec69f392AeC74Fa74a3551782F'
     },
     FlashSwapJoePango: {
       fuji: '0x75AE8752151746079B66B6B9A7ED1dbe20F156A5',
-      mainnet: ''
+      mainnet: '0x6a247370CE1D82af104987cB22046eC554b95cD3'
     }
   },
   external: {
