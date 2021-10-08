@@ -62,7 +62,7 @@ const swapMainToPartner = async (
             console.log('Primary Reserve', primaryReserve0.toString());
         }
 
-        if (+primaryReserve0.toString() > +secondaryReserve1.toString()) {
+        if (primaryReserve0.gte(secondaryReserve1)) {
             console.log('Error: Primary reserve larger than secondary reserve');
             return;
         }
@@ -71,8 +71,9 @@ const swapMainToPartner = async (
 
         const { usdt } = await getNamedAccounts()
 
-        const gas = 210000;
-        const gasPrice = await ethers.provider.getGasPrice();
+        const gas = 240000;
+        // const gasPrice = await ethers.provider.getGasPrice();
+        const gasPrice = 25000000000;
         const gasCost = gasPrice * gas;
 
         if (partnerTokenAddress === usdt) {
@@ -82,11 +83,12 @@ const swapMainToPartner = async (
             console.log('Price', price);
         }    
 
-        console.log('Estimated Gas Cost', gasCost);
+        if (isLocalEnv(network.name)) {
+            console.log('Estimated Gas Cost', gasCost);
+        }
         console.log('Profit Prediction', profitPrediction.toString());
-
         // If profit prediction is greater then gas then perform the swap
-        if (+profitPrediction.toString()  > gasCost) {
+        if (profitPrediction.gt(gasCost)) {
             const tx = await primaryTokenPair.swap(
                 primaryAmount0,
                 primaryAmount1,
@@ -99,12 +101,12 @@ const swapMainToPartner = async (
     
             logTable[tx.hash] = {
               "Gas Limit": tx.gasLimit.toString(),
-              "Gas Used": receipt.gasUsed.toString(),
+              "Gas Used": receipt && receipt.gasUsed ? receipt.gasUsed.toString() : null,
               "Gas Price": tx.gasPrice.toString(),
-              "Gas Fee": receipt.gasUsed.mul(tx.gasPrice).toString(),
+              "Gas Fee": receipt && receipt.gasUsed ? receipt.gasUsed.mul(tx.gasPrice).toString() : null,
               "Profit": profitPrediction.toString(),
-              "Net": profitPrediction.sub(receipt.gasUsed.mul(tx.gasPrice)).toString(),
-              Timestamp: new Date(Date.now()),
+              "Net": receipt && receipt.gasUsed ? profitPrediction.sub(receipt.gasUsed.mul(tx.gasPrice)).toString() : null,
+              Timestamp: new Date(Date.now())
             };
             console.table(logTable);
         }

@@ -1,0 +1,1 @@
+export const INTERVAL_TIME = 10000;
