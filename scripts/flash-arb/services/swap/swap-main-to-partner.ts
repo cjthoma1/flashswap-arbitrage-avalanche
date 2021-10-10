@@ -1,6 +1,7 @@
-import { bigNumberToNumber, expandToXDecimals, isLocalEnv } from '../../../../shared/utilities';
-import { Contract, BigNumber } from 'ethers';
+import { BigNumber, Contract } from 'ethers';
 import { getNamedAccounts, network } from 'hardhat';
+
+import { bigNumberToNumber, expandToXDecimals, isLocalEnv } from '../../../../shared/utilities';
 
 const swapMainToPartner = async (
     arbitrageAmount: BigNumber, primaryTokenPair: Contract, secondaryTokenPair: Contract, mainTokenAddress: string, 
@@ -72,8 +73,7 @@ const swapMainToPartner = async (
         const { usdt } = await getNamedAccounts()
 
         const gas = 240000;
-        // const gasPrice = await ethers.provider.getGasPrice();
-        const gasPrice = 25000000000;
+        const gasPrice = await ethers.provider.getGasPrice();
         const gasCost = gasPrice * gas;
 
         if (partnerTokenAddress === usdt) {
@@ -85,8 +85,8 @@ const swapMainToPartner = async (
 
         if (isLocalEnv(network.name)) {
             console.log('Estimated Gas Cost', gasCost);
+            console.log('Profit Prediction', profitPrediction.toString());
         }
-        console.log('Profit Prediction', profitPrediction.toString());
         // If profit prediction is greater then gas then perform the swap
         if (profitPrediction.gt(gasCost)) {
             const tx = await primaryTokenPair.swap(
@@ -100,6 +100,7 @@ const swapMainToPartner = async (
             const logTable = {};
     
             logTable[tx.hash] = {
+              "Block Number": await ethers.provider.getBlockNumber(),
               "Gas Limit": tx.gasLimit.toString(),
               "Gas Used": receipt && receipt.gasUsed ? receipt.gasUsed.toString() : null,
               "Gas Price": tx.gasPrice.toString(),

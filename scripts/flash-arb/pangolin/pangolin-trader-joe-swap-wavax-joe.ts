@@ -1,9 +1,10 @@
-import { ContractOptions } from '../../../shared/types';
 import { getNamedAccounts, network } from 'hardhat';
-import { isLocalEnv, expandTo18Decimals } from '../../../shared/utilities';
-import swapPartnerToMain from '../services/swap/swap-partner-to-main';
-import setupPangolinTraderJoe from '../services/setup/setup-pangolin-trader-joe';
+
 import { INTERVAL_TIME } from '../../../shared/constants';
+import { ContractOptions } from '../../../shared/types';
+import { expandTo18Decimals, isLocalEnv } from '../../../shared/utilities';
+import setupPangolinTraderJoe from '../services/setup/setup-pangolin-trader-joe';
+import swapPartnerToMain from '../services/swap/swap-partner-to-main';
 
 const runBot = async () => {
     try {
@@ -16,7 +17,6 @@ const runBot = async () => {
         } = await setupPangolinTraderJoe(wavax, joeToken, ContractOptions.PANGOLIN);
 
         const interval = setInterval(async () => {
-            console.log('Block Number', await ethers.provider.getBlockNumber());
             await swapPartnerToMain(expandTo18Decimals(2), pangolinTokenPair, traderJoeTokenPair, wavax, joeToken, pangolinLiquidityCompute, traderJoeLiquidityCompute, flashSwapContact);
 
             // If we running locally then kill the listener
