@@ -64,7 +64,7 @@ const swapPartnerToMain = async (
         }
 
         if (primaryReserve0.gte(secondaryReserve1)) {
-            console.log('Error: Primary reserve larger than secondary reserve');
+            // console.log('Error: Primary reserve larger than secondary reserve');
             return;
         }
 
