@@ -17,7 +17,7 @@ const runBot = async () => {
         } = await setupPangolinTraderJoe(wavax, usdt, ContractOptions.TRADER_JOE);
 
         const interval = setInterval(async () => {
-            await swapPartnerToMain(expandToXDecimals(20, 6), traderJoeTokenPair, pangolinTokenPair, usdt, wavax, traderJoeLiquidityCompute, pangolinLiquidityCompute, flashSwapContact);
+            await swapPartnerToMain(expandToXDecimals(50, 6), traderJoeTokenPair, pangolinTokenPair, usdt, wavax, traderJoeLiquidityCompute, pangolinLiquidityCompute, flashSwapContact);
 
             // If we running locally then kill the listener
             if (isLocalEnv(network.name)) {
