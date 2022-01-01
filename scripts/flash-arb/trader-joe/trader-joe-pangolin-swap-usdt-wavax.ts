@@ -2,7 +2,7 @@ import { getNamedAccounts, network } from 'hardhat';
 
 import { INTERVAL_TIME } from '../../../shared/constants';
 import { ContractOptions } from '../../../shared/types';
-import { expandToXDecimals, isLocalEnv } from '../../../shared/utilities';
+import { ChainlinkPriceOptions, expandToXDecimals, getChainlinkPrice, isLocalEnv } from '../../../shared/utilities';
 import setupPangolinTraderJoe from '../services/setup/setup-pangolin-trader-joe';
 import swapPartnerToMain from '../services/swap/swap-partner-to-main';
 
@@ -16,8 +16,10 @@ const runBot = async () => {
             traderJoeLiquidityCompute, flashSwapContact
         } = await setupPangolinTraderJoe(wavax, usdt, ContractOptions.TRADER_JOE);
 
+        const wavaxPrice = await getChainlinkPrice(ChainlinkPriceOptions.AXAX);
+
         const interval = setInterval(async () => {
-            await swapPartnerToMain(expandToXDecimals(50, 6), traderJoeTokenPair, pangolinTokenPair, usdt, wavax, traderJoeLiquidityCompute, pangolinLiquidityCompute, flashSwapContact);
+            await swapPartnerToMain(expandToXDecimals(100, 6), traderJoeTokenPair, pangolinTokenPair, usdt, wavax, wavaxPrice, traderJoeLiquidityCompute, pangolinLiquidityCompute, flashSwapContact);
 
             // If we running locally then kill the listener
             if (isLocalEnv(network.name)) {

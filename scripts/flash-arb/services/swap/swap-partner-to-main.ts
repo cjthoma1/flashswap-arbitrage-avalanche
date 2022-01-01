@@ -1,11 +1,11 @@
 import { BigNumber, Contract } from 'ethers';
-import { network } from 'hardhat';
+import { getNamedAccounts, network } from 'hardhat';
 
-import { isLocalEnv } from '../../../../shared/utilities';
+import { bigNumberToNumber, calculateGasCost, expandToXDecimals, isLocalEnv } from '../../../../shared/utilities';
 
 const swapPartnerToMain = async (
     arbitrageAmount: BigNumber, primaryTokenPair: Contract, secondaryTokenPair: Contract, partnerTokenAddress: string, 
-    mainTokenAddress: string, primaryLiquidityCompute: Contract, secondaryLiquidityCompute: Contract, flashSwapContract: Contract) => {
+    mainTokenAddress: string, mainTokenPrice: BigNumber, primaryLiquidityCompute: Contract, secondaryLiquidityCompute: Contract, flashSwapContract: Contract) => {
     try {
         // TODO: Delete after testing
         // let primaryReserves = await primaryTokenPair.getReserves();
@@ -68,19 +68,26 @@ const swapPartnerToMain = async (
             return;
         }
 
-        const profitPrediction: BigNumber = secondaryReserve1.sub(primaryReserve0);
+        let profitPrediction: BigNumber = secondaryReserve1.sub(primaryReserve0);
 
-        const gas = 240000;
-        const gasPrice = await ethers.provider.getGasPrice();
-        const gasCost = gasPrice * gas;
+        const { usdt } = await getNamedAccounts()
+
+        if (mainTokenAddress === usdt) {
+            profitPrediction = expandToXDecimals(+profitPrediction.toString(), 12);
+        }  
+
+        console.log('Main token price', mainTokenPrice.toString());
+        profitPrediction = profitPrediction.mul(mainTokenPrice);
+
+        const gasCost = await calculateGasCost();
     
-        if (isLocalEnv(network.name)) {
-            console.log('Estimated Gas Cost', gasCost);
-            console.log('Profit Prediction', profitPrediction.toString());
+        if (!isLocalEnv(network.name)) {
+            console.log('Estimated Gas Cost', gasCost.toString());
+            console.log('Big Number Pro Pred', bigNumberToNumber(profitPrediction));
         }
 
         // If profit prediction is greater then gas then perform the swap
-        if (profitPrediction.gt(gasCost)) {
+        if (bigNumberToNumber(profitPrediction) > gasCost) {
             const tx = await primaryTokenPair.swap(
                 primaryAmount0,
                 primaryAmount1,
