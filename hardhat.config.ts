@@ -1,11 +1,12 @@
-import { task } from "hardhat/config";
-import { HardhatUserConfig } from "hardhat/types";
+import '@nomiclabs/hardhat-ethers';
+import '@nomiclabs/hardhat-waffle';
+import 'hardhat-deploy';
+
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
-import { BigNumber } from "ethers";
-import dotenv from 'dotenv'
-import "@nomiclabs/hardhat-waffle";
-import "@nomiclabs/hardhat-ethers";
-import "hardhat-deploy";
+import dotenv from 'dotenv';
+import { BigNumber } from 'ethers';
+import { task } from 'hardhat/config';
+import { HardhatUserConfig } from 'hardhat/types';
 
 dotenv.config()
 
@@ -16,7 +17,7 @@ dotenv.config()
 // https://hardhat.org/hardhat-network/
 // https://hardhat.org/guides/mainnet-forking.html
 const FORK_FUJI = false;
-const FORK_MAINNET = false;
+const FORK_MAINNET = true;
 const forkingData = FORK_FUJI
   ? {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
@@ -31,9 +32,9 @@ const forkingData = FORK_FUJI
       // blockNumber: 5249586 // 10 usdt to wavax sushi to pangolin (project profit 470658700559315 wavax)
       // blockNumber: 5249692 // 10 usdt to wavax sushi to pangolin (project profit 1135402592789238 wavax)
       // blockNumber: 5251297 // 10 joe to wavax traderjoe to pangolin (projected profit 243778322177914 wavax)
-      // blockNumber: 5251439 // 10 joe to wavax traderjoe to pangolin (projected profit 1190372056744608 wavax)
+      // blockNumber: 5251439 // 10 joe to wavax traderjoe to pangolin (projected profit 1190372056744608 wavax)   
       // blockNumber: 5251468 // 1 wavax to joe pangolin to traderjoe (projected profit 75516005670000000 wavax aka 0.07551600566917815)
-      // blockNumber: 5251556 // 50 joe to wavax traderjoe to pangolin (projected profit 3403556492944739 wavax)
+      // blockNumber: 5251556 // 50 joe to wavax traderjoe to pangolin (projected profit 3403556492944739 wavax) 
       // blockNumber: 5251618 // 75 joe to wavax traderjoe to pangolin (projected profit 24475828070000000 wavax aka 0.024475828065500242)
       // blockNumber: 5251870 // 75 joe to wavax traderjoe to pangolin (projected profit 15500747114593090 wavax aka 0.01550074711459309)
       // blockNumber: 5251864 // 1 wavax to joe pangolin to traderjoe (projected profit 177607747793017341 wavax aka 0.17760774779301733) // Gas used 206229 // Gas price 1200000000000 // Gas fee 53661198258
@@ -41,6 +42,17 @@ const forkingData = FORK_FUJI
       // blockNumber: 5252814 // 1 wavax to joe traderjoe to pangolin (projected profit 239483049727551773 wavax aka 0.239483049727551773)
       // blockNumber: 5306013 // 1 wavax to joe traderjoe to pangolin (projected profit 50809123602056431 wavax aka 0.050809123602056431)
       // blockNumber: 5016623
+      // blockNumber: 8921885 // 2 WAVAX to joe, Pangolin to Joe (profit 73023746274396847892250000000000000)
+      // blockNumber: 8921981 // 2 wavax to joe, Pangolin to Joe (profit 82572285259298729373793200000000000) 
+      // blockNumber: 8921992 // 2 wavax to joe, Pangolin to Joe (profit 197424600156777559788288000000000000) 
+      // blockNumber: 8922156 // 2 wavax to joe, Pangolin to Joe (profit 364379922936700426281063600000000000) 
+      // blockNumber: 8922156 // 2 wavax to joe, Pangolin to Joe (profit 366657357762597266340098400000000000)
+      // blockNumber: 8924177 // 2 wavax to Joe, Pangolin to Joe (profit 109934577357960224994184800000000000)
+      // blockNumber: 8921987 // 25 joe to wavax, Joe to Pangolin (profit 79038599525860493327444700000000000)
+      // blockNumber: 8922166 // 25 joe to wavax, Joe to Pangolin (profit 153811672432513862724877300000000000) 
+      // blockNumber: 8922311 // 25 joe to wavax, Joe to Pangolin (profit 82784057876351748642335100000000000)
+      // blockNumber: 8922330 // 25 joe to wavax, Joe to Pangolin (profit 118608970893083740317077400000000000) 
+      blockNumber: 8924041 // 25 joe to wavax, Joe to Pangolin (profit 68551955464169808384271350000000000)
     }
   : undefined;
 
@@ -139,8 +151,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
-      // gasPrice: 225000000000,
-      gasPrice: 'auto',
+      gasPrice: 30000000000,
       chainId: !forkingData ? 43112 : 43114, // Only specify a chainId if we are not forking
       forking: forkingData
     },
@@ -163,14 +174,15 @@ const config: HardhatUserConfig = {
     },
     fuji: {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
-      gasPrice: 225000000000,
+      gas: 260000,
+      gasPrice: 30000000000,
       chainId: 43113,
       accounts: [`0x${process.env.METAMASK_PRIVATE_KEY}`],
     },
     mainnet: {
       url: "https://api.avax.network/ext/bc/C/rpc",
-      // gasPrice: 225000000000,
-      gasPrice: 'auto',
+      gas: 260000,
+      gasPrice: 30000000000,
       chainId: 43114,
       accounts: [`0x${process.env.METAMASK_PRIVATE_KEY}`],
     },
@@ -285,6 +297,36 @@ const config: HardhatUserConfig = {
     traderJoeComputeLiquidityValueAddr: {
       fuji: '0xc32608bBb75c20f09ab5e794F64283A7E4C00e59',
       mainnet: '0x2Ae1F94eFaC53e0394251E59D46436350dB64C15'
+    },
+    avaxChainLink: {
+      hardhat: '0x0A77230d17318075983913bC2145DB16C7366156',
+      fuji: '0x5498BB86BC934c8D34FDA08E81D444153d0D06aD',
+      mainnet: '0x0A77230d17318075983913bC2145DB16C7366156'
+    },
+    daiChainLink: {
+      hardhat: '0x51D7180edA2260cc4F6e4EebB82FEF5c3c2B8300',
+      mainnet: '0x51D7180edA2260cc4F6e4EebB82FEF5c3c2B8300'
+    },
+    joeChainLink: {
+      hardhat: '0x02D35d3a8aC3e1626d3eE09A78Dd87286F5E8e3a',
+      mainnet: '0x02D35d3a8aC3e1626d3eE09A78Dd87286F5E8e3a'
+    },
+    mimChainLink: {
+      hardhat: '0x54EdAB30a7134A16a54218AE64C73e1DAf48a8Fb',
+      mainnet: '0x54EdAB30a7134A16a54218AE64C73e1DAf48a8Fb'
+    },
+    spellChainLink: {
+      hardhat: '0x4F3ddF9378a4865cf4f28BE51E10AECb83B7daeE',
+      mainnet: '0x4F3ddF9378a4865cf4f28BE51E10AECb83B7daeE'
+    },
+    usdcChainLink: {
+      hardhat: '0xF096872672F44d6EBA71458D74fe67F9a77a23B9',
+      mainnet: '0xF096872672F44d6EBA71458D74fe67F9a77a23B9'
+    },
+    usdtChainLink: {
+      hardhat: '0xEBE676ee90Fe1112671f19b6B7459bC678B67e8a',
+      fuji: '0x7898AcCC83587C3C55116c5230C17a6Cd9C71bad',
+      mainnet: '0xEBE676ee90Fe1112671f19b6B7459bC678B67e8a'
     }
   },
   external: {

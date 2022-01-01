@@ -2,7 +2,7 @@ import { getNamedAccounts, network } from 'hardhat';
 
 import { INTERVAL_TIME } from '../../../shared/constants';
 import { ContractOptions } from '../../../shared/types';
-import { expandToXDecimals, isLocalEnv } from '../../../shared/utilities';
+import { ChainlinkPriceOptions, expandToXDecimals, getChainlinkPrice, isLocalEnv } from '../../../shared/utilities';
 import setupPangolinSushi from '../services/setup/setup-pangolin-sushi';
 import swapPartnerToMain from '../services/swap/swap-partner-to-main';
 
@@ -16,8 +16,10 @@ const runBot = async () => {
             sushiSwapLiquidityCompute, flashSwapContact
         } = await setupPangolinSushi(wavax, usdt, ContractOptions.SUSHI_SWAP);
 
+        const wavaxPrice = await getChainlinkPrice(ChainlinkPriceOptions.AXAX);
+
         const interval = setInterval(async () => {
-            await swapPartnerToMain(expandToXDecimals(10, 6), sushiTokenPair, pangolinTokenPair, usdt, wavax, sushiSwapLiquidityCompute, pangolinLiquidityCompute, flashSwapContact);
+            await swapPartnerToMain(expandToXDecimals(10, 6), sushiTokenPair, pangolinTokenPair, usdt, wavax, wavaxPrice, sushiSwapLiquidityCompute, pangolinLiquidityCompute, flashSwapContact);
 
             // If we running locally then kill the listener
             if (isLocalEnv(network.name)) {
