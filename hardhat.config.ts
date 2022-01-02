@@ -174,14 +174,12 @@ const config: HardhatUserConfig = {
     },
     fuji: {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
-      gas: 260000,
       gasPrice: 30000000000,
       chainId: 43113,
       accounts: [`0x${process.env.METAMASK_PRIVATE_KEY}`],
     },
     mainnet: {
       url: "https://api.avax.network/ext/bc/C/rpc",
-      gas: 260000,
       gasPrice: 30000000000,
       chainId: 43114,
       accounts: [`0x${process.env.METAMASK_PRIVATE_KEY}`],
