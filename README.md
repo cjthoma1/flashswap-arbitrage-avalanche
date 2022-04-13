@@ -10,7 +10,7 @@ The goal of this guide is to lay out best practices regarding writing, testing a
 
 ### NodeJS and Yarn
 
-First, install the LTS (long-term support) version of [nodejs](https://nodejs.org/en). This is `14.17.0` at the time of writing. NodeJS bundles `npm`.
+First, install the LTS (long-term support) version of [nodejs](https://nodejs.org/en). This is `16.14.2` at the time of writing. NodeJS bundles `npm`.
 
 Next, install [yarn](https://yarnpkg.com):
 
@@ -18,6 +18,20 @@ Next, install [yarn](https://yarnpkg.com):
 npm install -g yarn
 ```
 
+### Getting Started
+1. Create .env file
+
+2. Add env variable equal to your metamask private key [Steps to get key](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key)
+`METAMASK_PRIVATE_KEY=<private key>`
+
+3. Intall your dependencies
+    ```zsh
+    yarn
+    ```
+4. Run arbitriage bot (Check package.json for options)
+    ```zsh
+    yarn run arb:pangolin:joe:wavax:usdt --network mainnet
+    ```
 ### AvalancheGo and Avash
 
 [AvalancheGo](https://github.com/ava-labs/avalanchego) is an Avalanche node implementation written in Go. [Avash](https://docs.avax.network/build/tools/avash) is a tool to quickly deploy local test networks. Together, you can deploy local test networks and run tests on them.
@@ -26,7 +40,7 @@ npm install -g yarn
 
 It is also helpful to have a basic understanding of [Solidity](https://docs.soliditylang.org) and [Avalanche](https://docs.avax.network).
 
-## Dependencies
+<!-- ## Dependencies
 
 Clone the [quickstart repository](https://github.com/ava-labs/avalanche-smart-contract-quickstart) and install the necessary packages via `yarn`.
 
@@ -34,7 +48,7 @@ Clone the [quickstart repository](https://github.com/ava-labs/avalanche-smart-co
 $ git clone https://github.com/ava-labs/avalanche-smart-contract-quickstart.git
 $ cd avalanche-smart-contract-quickstart
 $ yarn
-```
+``` -->
 
 ## Write Contracts
 
