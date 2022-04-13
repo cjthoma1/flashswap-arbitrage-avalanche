@@ -22,7 +22,8 @@ npm install -g yarn
 1. Create .env file
 
 2. Add env variable equal to your metamask private key [Steps to get key](https://metamask.zendesk.com/hc/en-us/articles/360015289632-How-to-Export-an-Account-Private-Key)
-`METAMASK_PRIVATE_KEY=<private key>`
+
+    `METAMASK_PRIVATE_KEY=<private key>`
 
 3. Intall your dependencies
     ```zsh
